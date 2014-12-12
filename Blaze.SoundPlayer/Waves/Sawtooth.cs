@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Blaze.SoundPlayer.Waves
 {
-    class Sawtooth : Wave
+    public class Sawtooth : Wave
     {
         public Sawtooth(int resolution)
             : base(resolution)

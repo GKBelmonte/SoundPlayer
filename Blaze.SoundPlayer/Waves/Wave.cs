@@ -17,7 +17,7 @@ namespace Blaze.SoundPlayer.Waves
     {
         protected short _resolution;
         protected short[] _data;
-
+        protected bool _initialized;
         public short Resolution { get { return _resolution; } }
 
         public Wave(int resolution)
@@ -30,14 +30,17 @@ namespace Blaze.SoundPlayer.Waves
         {
             _resolution = w1._resolution;
             _data = new short[_resolution];
-            for (var ii = 0; ii < 0; ++ii)
+            for (var ii = 0; ii < _resolution; ++ii)
             {
                 _data[ii] = (short)(w1._data[ii] + w2._data[ii]);
             }
+            _initialized = true;
         }
 
         public virtual void Initialize()
         {
+            if (_initialized)
+                return;
             for (var ii = 0; ii < _resolution; ++ii)
                 _data[ii] = 0; //base amplitude should be 100th of maximum (2^15 - 1)/100
         }

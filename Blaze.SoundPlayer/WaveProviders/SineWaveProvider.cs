@@ -14,9 +14,10 @@ namespace Blaze.SoundPlayer.WaveProviders
         public SineWaveProvider()
         {
             Frequency = 1000;
-            Amplitude = 14000; 
+            Amplitude = 3500; 
         }
- 
+
+        public int Resolution { get; protected set; } 
         public float Frequency { get; set; }
         public short Amplitude { get; set; }
  

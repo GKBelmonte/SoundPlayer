@@ -11,13 +11,33 @@ namespace Blaze.SoundPlayer.TestConsoleApp
     {
         static void Main(string[] args)
         {
-            ISoundPlayer player = new NAudioSoundPlayer(0, 16000);
-            player.PlayOnceSync(1000);
-            Console.ReadKey(false);
+            //ISoundPlayerX player = new NAudioSoundPlayerX(0, 16000);
+            //player.PlayOnceSync(1000,440);
+            //Console.ReadKey(false);
 
-            ISoundPlayer player2 = new NAudioSoundPlayer(1, 16000);
-            player2.PlayOnceSync(1000);
+            //ISoundPlayerX player2 = new NAudioSoundPlayerX(1, 16000);
+            //player2.PlayOnceSync(1000,220);
+            //Console.ReadKey(false);
+            
+            //ISoundPlayerX player3 = new NAudioSoundPlayerX(2, 16000);
+            //player3.PlayOnceSync(1000, 1000);
+            //Console.ReadKey(false);
+
+            ISoundPlayer player4 = new NAudioSoundPlayer();
+            Wave wav = new Sinusoid(4 * 1024);
+            Wave wav1_5 = new Sinusoid(4 * 1024);
+            Wave wav2 = new Sawtooth(4 * 1024);
+            player4.PlaySync(wav, 440, 1000);
+            player4.PlaySync(wav2, 660, 1000);
             Console.ReadKey(false);
+            player4.PlaySync(wav + wav2, 440, 1000);
+            Console.ReadKey(false);
+            player4.PlaySync(new Wave[] {wav, wav, wav}, new float [] {440,660,880}, 2000);
+        }
+
+        short SinWaveGen(int sampleRate, int sampleNumber, float freq, int amplitude)
+        {
+            return (short)(amplitude * Math.Sin((2 * Math.PI * sampleNumber * freq) / sampleRate));
         }
     }
 }

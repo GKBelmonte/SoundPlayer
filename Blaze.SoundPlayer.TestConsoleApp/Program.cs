@@ -33,11 +33,14 @@ namespace Blaze.SoundPlayer.TestConsoleApp
             player4.PlaySync(wav + wav2, 440, 1000);
             Console.ReadKey(false);
             player4.PlaySync(new Wave[] {wav, wav, wav}, new float [] {440,660,880}, 2000);
+            Console.ReadKey(false);
+            player4.PlaySync(new WaveGenerator(SinWaveGen), 440, 1000);
+            player4.PlaySync(wav, 440, 1000);
         }
 
-        short SinWaveGen(int sampleRate, int sampleNumber, float freq, int amplitude)
+        static short SinWaveGen(int sampleRate, int sampleNumber, float freq)
         {
-            return (short)(amplitude * Math.Sin((2 * Math.PI * sampleNumber * freq) / sampleRate));
+            return (short)(100 * Math.Sin((2 * Math.PI * sampleNumber * freq) / sampleRate));
         }
     }
 }

@@ -96,8 +96,8 @@ namespace Blaze.SoundPlayer.Waves
         }
 
 
-        int MaxNegativeExponent = 5;//resolution to the closest multiple of 2^(-5) = 0.03125
-        public void GetPowerAndMultiplier(double freq, out int negativeExponent, out int multiplier)
+        static int MaxNegativeExponent = 5;//resolution to the closest multiple of 2^(-5) = 0.03125
+        static public void GetPowerAndMultiplier(double freq, out int negativeExponent, out int multiplier)
         {
             double fractional = freq - Math.Floor(freq);
             negativeExponent = 0;

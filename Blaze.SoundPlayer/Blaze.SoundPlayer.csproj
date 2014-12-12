@@ -51,6 +51,8 @@
     <Compile Include="ISoundPlayer.cs" />
     <Compile Include="WaveProviders\IWaveProviderExposer.cs" />
     <Compile Include="MathExtensions.cs" />
+    <Compile Include="WaveProviders\WaveGeneratorProvider.cs" />
+    <Compile Include="WaveProviders\WaveProviderCommon.cs" />
     <Compile Include="Waves\Wave.cs" />
     <Compile Include="NAudioSoundPlayer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

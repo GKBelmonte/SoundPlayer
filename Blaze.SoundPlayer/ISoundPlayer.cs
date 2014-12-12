@@ -7,7 +7,7 @@ using Blaze.SoundPlayer.Waves;
 
 namespace Blaze.SoundPlayer
 {
-    public delegate short WaveGenerator(int sampleRate, int sampleNumber, float freq, int amplitude);
+    public delegate short WaveGenerator(int sampleRate, int sampleNumber, float freq);
     public interface ISoundPlayer
     {
         int SampleFrequency { get; set; }

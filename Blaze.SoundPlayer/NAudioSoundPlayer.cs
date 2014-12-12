@@ -52,15 +52,13 @@ namespace Blaze.SoundPlayer
             mWaitForPlayBackStopped.Set();
         }
 
-        public void PlaySync(Wave track, float freq = 440, int fixedDuration = -1)
+        public void PlaySync(IWaveProviderExposer wave, int fixedDuration = -1)
         {
-            var wave = new FixedDataWaveProvider(track);
             wave.SetWaveFormat(mSampleFrequency, 1);
-            wave.Frequency = freq;
             lock (mWaveLock)
             {
                 mWaveOut = new WaveOut();
-                if(fixedDuration == -1)
+                if (fixedDuration == -1)
                     mWaveOut.PlaybackStopped += mWaveOut_PlaybackStopped;
                 mWaveOut.Init(wave);
                 mWaveOut.Play();
@@ -73,13 +71,20 @@ namespace Blaze.SoundPlayer
                 Thread.Sleep(fixedDuration);
                 mWaveOut.Stop();
             }
-            
+
             lock (mWaveOut)
             {
                 if (fixedDuration == -1)
                     mWaveOut.PlaybackStopped -= mWaveOut_PlaybackStopped;
                 mWaveOut.Dispose();
             }
+        }
+
+        public void PlaySync(Wave track, float freq = 440, int fixedDuration = -1)
+        {
+            var wave = new FixedDataWaveProvider(track);
+            wave.Frequency = freq;
+            PlaySync(wave, fixedDuration);
 
         }
 
@@ -87,31 +92,8 @@ namespace Blaze.SoundPlayer
         public void PlaySync(IList<Wave> tracks, IList<float> freq, int fixedDuration)
         {
             var wave = new CompositeFixedDataWaveProvider(tracks);
-            wave.SetWaveFormat(mSampleFrequency, 1);
             wave.Frequencies = freq;
-            lock (mWaveLock)
-            {
-                mWaveOut = new WaveOut();
-                if (fixedDuration == -1)
-                    mWaveOut.PlaybackStopped += mWaveOut_PlaybackStopped;
-                mWaveOut.Init(wave);
-                mWaveOut.Play();
-            }
-
-            if (fixedDuration == -1)
-                mWaitForPlayBackStopped.WaitOne();
-            else
-            {
-                Thread.Sleep(fixedDuration);
-                mWaveOut.Stop();
-            }
-
-            lock (mWaveOut)
-            {
-                if (fixedDuration == -1)
-                    mWaveOut.PlaybackStopped -= mWaveOut_PlaybackStopped;
-                mWaveOut.Dispose();
-            }
+            PlaySync(wave, fixedDuration);
         }
 
 
@@ -137,7 +119,9 @@ namespace Blaze.SoundPlayer
 
         public void PlaySync(WaveGenerator track, float freq, int fixedDuration)
         {
-            throw new NotImplementedException();
+            var wave = new WaveGeneratorProvider(track);
+            wave.Frequency = freq;
+            PlaySync(wave,fixedDuration);
         }
 
         public void PlaySync(IList<WaveGenerator> tracks, IList<float> freq, int fixedDuration)

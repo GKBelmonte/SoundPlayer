@@ -67,6 +67,7 @@ namespace Blaze.SoundPlayer.WaveProviders
 
         public override int Read(short[] buffer, int offset, int sampleCount)
         {
+            sample += sampleCount;
             foreach (FixedDataWaveProvider wave in _waves)
                 wave.AddToBuffer(buffer, offset, sampleCount);
             return sampleCount;

@@ -57,14 +57,8 @@ namespace Blaze.SoundPlayer.WaveProviders
             for (int n = 0; n < sampleCount; n++)
             {
                 //(short)(Amplitude * Math.Sin((2 * Math.PI * sample * Frequency) / sampleRate));
-                try
-                {
-                    checked { buffer[n + offset] += _wave[sample, Amplitude, freqMultiplier]; }
-                }
-                catch (OverflowException)
-                { 
-                    
-                }
+                buffer[n + offset] += _wave[sample, Amplitude, freqMultiplier]; 
+
                 sample++;
             }
         }

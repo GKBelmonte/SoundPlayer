@@ -44,13 +44,16 @@
   <ItemGroup>
     <Compile Include="AttackDecaySustainRelease.cs" />
     <Compile Include="Note.cs" />
+    <Compile Include="Sounds\SimpleSound.cs" />
     <Compile Include="Track.cs" />
+    <Compile Include="WaveProviders\AdditiveSynthesisWaveProvider.cs" />
     <Compile Include="WaveProviders\CompositeFixedDataWaveProvider.cs" />
     <Compile Include="WaveProviders\FixedDataWaveProvider.cs" />
     <Compile Include="HelperData.cs" />
     <Compile Include="ISoundPlayer.cs" />
     <Compile Include="WaveProviders\IWaveProviderExposer.cs" />
     <Compile Include="MathExtensions.cs" />
+    <Compile Include="WaveProviders\SimpleSoundProvider.cs" />
     <Compile Include="WaveProviders\WaveGeneratorProvider.cs" />
     <Compile Include="WaveProviders\WaveProviderCommon.cs" />
     <Compile Include="Waves\Wave.cs" />

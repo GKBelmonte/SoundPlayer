@@ -7,10 +7,17 @@ using System.Threading.Tasks;
 namespace Blaze.SoundPlayer.Waves
 {
     /// <summary>
-    /// Represents the data of a wave, and functions to operate of this data.
+    /// Represents the data of a wave, a single perdiod since that is all that is required to represent it. <br/>
+    /// Contains functions to operate on the data, including grabbing the wave at different multiple frequencies and
+    /// amplitudes. <br/>
+    /// The base frequency of a wave (played at 1 multiplier) will be given by fs/Resolution.<br/>
+    /// The amplitude of the wave is recommended to be 1% of the max value of integral data type to allow
+    /// supporting classes to assume an amplitude percentage of the max volume.<br/>
+    /// Getting a fractional multiple of the base frequency of the wave is avalaible via linear interpolation, 
+    /// up to the degree of BinaryPrecision number of places.<br/>
     /// Inherited classes should override the Initialize function and fill 
     /// '<see cref="_data"/>' member with one period of the waveform with '<see cref="Resolution"/>' 
-    /// number of samples.
+    /// number of samples.<br/>
     /// For optimal performance, use powers of two for resolution.
     /// </summary>
     public class Wave
@@ -42,7 +49,7 @@ namespace Blaze.SoundPlayer.Waves
             if (_initialized)
                 return;
             for (var ii = 0; ii < _resolution; ++ii)
-                _data[ii] = 0; //base amplitude should be 100th of maximum (2^15 - 1)/100
+                _data[ii] = 0; //base amplitude should be 100th of maximum (2^15 - 1)/128
         }
 
         public short this[int i]
@@ -95,13 +102,22 @@ namespace Blaze.SoundPlayer.Waves
             }
         }
 
-
-        static int MaxNegativeExponent = 5;//resolution to the closest multiple of 2^(-5) = 0.03125
+        static int BinaryPrecision
+        {
+            get { return maxNegativeExponent; }
+            set 
+            {
+                if (value <= 0) maxNegativeExponent = 0;
+                else if (value >= 16) maxNegativeExponent = 16;
+                else maxNegativeExponent = value;
+            }
+        }
+        static int maxNegativeExponent = 5;//resolution to the closest multiple of 2^(-5) = 0.03125
         static public void GetPowerAndMultiplier(double freq, out int negativeExponent, out int multiplier)
         {
             double fractional = freq - Math.Floor(freq);
             negativeExponent = 0;
-            while (fractional != Math.Floor(fractional) && negativeExponent < MaxNegativeExponent)
+            while (fractional != Math.Floor(fractional) && negativeExponent < maxNegativeExponent)
             {
                 negativeExponent++;
                 fractional = fractional * 2;

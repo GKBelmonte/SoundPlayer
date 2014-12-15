@@ -42,7 +42,6 @@ namespace Blaze.SoundPlayer.WaveProviders
             {
                 buffer[n + offset] = (short)(Amplitude * _wave(sampleRate,sample,Frequency));
                 sample++;
-                if (sample >= sampleRate) sample = 0;
             }
             return count;
         }

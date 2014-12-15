@@ -3,11 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Blaze.SoundPlayer.WaveProviders;
 using Blaze.SoundPlayer.Waves;
 
 namespace Blaze.SoundPlayer
 {
     public delegate short WaveGenerator(int sampleRate, int sampleNumber, float freq);
+    public delegate float EnvelopeGenerator(int sampleRate, int sampleNumber);
+    public delegate float FrequencyModulator(int sampleRate, int sampleNumber);
+    public delegate float PhaseModulator(int sampleRate, int sampleNumber);
     public interface ISoundPlayer
     {
         int SampleFrequency { get; set; }
@@ -23,6 +27,8 @@ namespace Blaze.SoundPlayer
 
         void PlaySync(Wave track, float freq, int fixedDuration);
         void PlaySync(IList<Wave> tracks, IList<float> freq, int fixedDuration);
+        
+        void PlaySync(IWaveProviderExposer tracks, float freq, int fixedDuration);
 
         bool Stop();
         bool Pause();

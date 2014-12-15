@@ -52,6 +52,22 @@ namespace Blaze.SoundPlayer
             mWaitForPlayBackStopped.Set();
         }
 
+        public static IWaveProviderExposer FactoryCreate(Sounds.SimpleSound sound)
+        {
+            return new SimpleSoundProvider(sound);
+        }
+
+        public static IWaveProviderExposer FactoryCreate(IList<Sounds.SimpleSound> sounds)
+        {
+            return new AdditiveSynthesisWaveProvider(sounds);
+        }
+
+        public void PlaySync(IWaveProviderExposer wave, float freq, int fixedDuration = -1)
+        {
+            wave.Frequency = freq;
+            PlaySync(wave, fixedDuration);
+        }
+
         public void PlaySync(IWaveProviderExposer wave, int fixedDuration = -1)
         {
             wave.SetWaveFormat(mSampleFrequency, 1);
@@ -60,7 +76,7 @@ namespace Blaze.SoundPlayer
                 mWaveOut = new WaveOut();
                 if (fixedDuration == -1)
                     mWaveOut.PlaybackStopped += mWaveOut_PlaybackStopped;
-                mWaveOut.Init(wave);
+                mWaveOut.Init((IWaveProvider)wave);
                 mWaveOut.Play();
             }
 
@@ -189,87 +205,6 @@ namespace Blaze.SoundPlayer
         public void PlayAsync(IList<Wave> tracks, IList<float> freq, int fixedDuration)
         {
             throw new NotImplementedException();
-        }
-    }
-
-
-
-
-
-    public class NAudioSoundPlayerX : ISoundPlayerX
-    {
-
-        protected IWaveProviderExposer _wave;
-        //protected WaveProvider16 wave;
-        protected WaveOut _waveOut;
-        protected object _waveOutLock = new object();
-        protected int _sampleRate;
-        public NAudioSoundPlayerX(int type, int sampleRate)
-        {
-            if (type == 0)
-                _wave = (new SineWaveProvider());
-            else if (type == 1)
-                _wave = (new FixedDataWaveProvider(new Waves.Sinusoid(1024 * 4)));
-            else
-            {
-                _wave = new CompositeFixedDataWaveProvider();
-                var temp = new FixedDataWaveProvider(new Waves.Sinusoid(1024 * 4));
-                temp.Frequency = 500;
-                (_wave as CompositeFixedDataWaveProvider).AddWave(temp);
-                temp = new FixedDataWaveProvider(new Waves.Sinusoid(1024 * 4));
-                temp.Frequency = 1000;
-                (_wave as CompositeFixedDataWaveProvider).AddWave(temp);
-            }
-            _wave.SetWaveFormat(sampleRate, 1);
-            _sampleRate = sampleRate;
-        }
-
-        public int SampleRate
-        {
-            get{ return _sampleRate;}
-            set
-            {
-                _wave.SetWaveFormat(value, 1);
-                _sampleRate = value;
-            }
-        }
-
-        public int[] Data
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-        public void PlayOnce(int duration, float freq)
-        {
-            var wave = _wave;
-
-            wave.Frequency = freq;
-            lock (_waveOutLock)
-            {
-                _waveOut = new WaveOut();
-                _waveOut.Init(wave);
-                _waveOut.Play();
-            }
-        }
-
-        public void PlayOnceSync(int duration, float freq)
-        {
-            var wave = _wave;
-            wave.Frequency = freq;
-            lock (_waveOutLock)
-            {
-                _waveOut = new WaveOut();
-                _waveOut.Init(wave);
-                _waveOut.Play();
-            }
-            Thread.Sleep(duration);
-            _waveOut.Stop();
         }
     }
 }

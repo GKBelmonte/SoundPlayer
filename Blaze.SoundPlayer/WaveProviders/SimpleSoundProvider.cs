@@ -8,7 +8,7 @@ using Blaze.SoundPlayer.Sounds;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    public class SimpleSoundProvider : WaveProvider16, IWaveProviderExposer
+    internal class SimpleSoundProvider : WaveProvider16, IWaveProviderExposer
     {
         int sample;
         SimpleSound mSound;
@@ -29,7 +29,7 @@ namespace Blaze.SoundPlayer.WaveProviders
             set;
         }
 
-        public short Amplitude
+        public float Amplitude
         {
             get;
             set;

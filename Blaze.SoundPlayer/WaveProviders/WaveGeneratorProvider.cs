@@ -7,7 +7,7 @@ using NAudio.Wave;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    public class WaveGeneratorProvider : WaveProvider16 ,IWaveProviderExposer
+    internal class WaveGeneratorProvider : WaveProvider16, IWaveProviderExposer
     {
         readonly WaveGenerator _wave;
         public WaveGeneratorProvider (WaveGenerator waveGen)
@@ -29,7 +29,7 @@ namespace Blaze.SoundPlayer.WaveProviders
             set;
         }
 
-        public short Amplitude
+        public float Amplitude
         {
             get;
             set;

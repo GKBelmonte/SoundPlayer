@@ -86,22 +86,6 @@ namespace Blaze.SoundPlayer.Waves
             }
         }
 
-        public short this[int i, float amplitude, int freqMult]
-        {
-            get
-            {
-                return (short)(_data[(i * freqMult) % _resolution] * amplitude);
-            }
-        }
-
-        public short this[int i, float amplitude, int freqMult, int phase]
-        {
-            get
-            {
-                return (short)(_data[(i * freqMult + phase) % _resolution] * amplitude);
-            }
-        }
-
         static int BinaryPrecision
         {
             get { return maxNegativeExponent; }
@@ -128,6 +112,21 @@ namespace Blaze.SoundPlayer.Waves
         public static Wave operator +(Wave w1, Wave w2)
         {
             return new Wave(w1, w2);
+        }
+
+        protected WaveGenerator mWaveGenerator;
+
+        public WaveGenerator WaveGenerator
+        {
+            get
+            {
+                if (mWaveGenerator == null)
+                    mWaveGenerator 
+                        = new WaveGenerator((sampleRate, sampleNumber, freq) => 
+                            (this[sampleNumber, freq * Resolution / sampleRate]));
+                return mWaveGenerator;
+                
+            }
         }
     }
 }

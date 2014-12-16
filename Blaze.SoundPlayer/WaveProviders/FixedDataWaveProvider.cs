@@ -8,7 +8,7 @@ using Blaze.SoundPlayer.Waves;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    public class FixedDataWaveProvider : WaveProvider16, IWaveProviderExposer
+    internal class FixedDataWaveProvider : WaveProvider16, IWaveProviderExposer
     {
         int sample;
         readonly Wave _wave;
@@ -25,11 +25,11 @@ namespace Blaze.SoundPlayer.WaveProviders
         public float Frequency { get; set; }
 
 
-        short _amplitude;
+        float _amplitude;
         /// <summary>
         /// 0 - 100 (%)
         /// </summary>
-        public short Amplitude
+        public float Amplitude
         {
             get { return _amplitude; } 
             set { if (value < 0) _amplitude = 0; else if (value > 100) _amplitude = 100; else _amplitude = value; } 
@@ -39,11 +39,11 @@ namespace Blaze.SoundPlayer.WaveProviders
         {
             int sampleRate = WaveFormat.SampleRate;//Hz
             double baseFreq = (double)sampleRate / (double)_wave.Resolution;
-            int freqMultiplier = (int) Math.Round(Frequency / baseFreq);
+            double freqMultiplier = Math.Round(Frequency / baseFreq);
             for (int n = 0; n < sampleCount; n++)
             {
                 //(short)(Amplitude * Math.Sin((2 * Math.PI * sample * Frequency) / sampleRate));
-                buffer[n + offset] = _wave[sample, Amplitude, freqMultiplier];
+                buffer[n + offset] = (short)(Amplitude*_wave[sample, freqMultiplier]);
                 sample++;
             }
             return sampleCount;
@@ -57,7 +57,7 @@ namespace Blaze.SoundPlayer.WaveProviders
             for (int n = 0; n < sampleCount; n++)
             {
                 //(short)(Amplitude * Math.Sin((2 * Math.PI * sample * Frequency) / sampleRate));
-                buffer[n + offset] += _wave[sample, Amplitude, freqMultiplier]; 
+                buffer[n + offset] += (short)(Amplitude * _wave[sample, freqMultiplier]); 
 
                 sample++;
             }

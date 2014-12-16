@@ -9,7 +9,7 @@ using System.Collections;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    public class CompositeFixedDataWaveProvider : WaveProvider16 , IWaveProviderExposer
+    internal class CompositeFixedDataWaveProvider : WaveProvider16 , IWaveProviderExposer
     {
         int sample;
         readonly protected List<FixedDataWaveProvider> _waves;
@@ -55,11 +55,11 @@ namespace Blaze.SoundPlayer.WaveProviders
         }
 
 
-        short _amplitude;
+        float _amplitude;
         /// <summary>
         /// 0 - 100 (%)
         /// </summary>
-        public short Amplitude
+        public float Amplitude
         {
             get { return _amplitude; } 
             set { if (value < 0) _amplitude = 0; else if (value > 100) _amplitude = 100; else _amplitude = value; } 

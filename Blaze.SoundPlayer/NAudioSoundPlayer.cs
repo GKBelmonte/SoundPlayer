@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using NAudio.Wave;
 using Blaze.SoundPlayer.Waves;
 using Blaze.SoundPlayer.WaveProviders;
+using Blaze.SoundPlayer.Sounds;
 
 namespace Blaze.SoundPlayer
 {
@@ -57,9 +58,9 @@ namespace Blaze.SoundPlayer
             return new SimpleSoundProvider(sound);
         }
 
-        public static IWaveProviderExposer FactoryCreate(IList<Sounds.SimpleSound> sounds)
+        public static IWaveProviderExposer FactoryCreate(IList<Sounds.SimpleSound> sounds, IList<float> frq =null, IList<float> amps=null)
         {
-            return new AdditiveSynthesisWaveProvider(sounds);
+            return new AdditiveSynthesisWaveProvider(sounds,frq,amps);
         }
 
         public void PlaySync(IWaveProviderExposer wave, float freq, int fixedDuration = -1)
@@ -101,7 +102,6 @@ namespace Blaze.SoundPlayer
             var wave = new FixedDataWaveProvider(track);
             wave.Frequency = freq;
             PlaySync(wave, fixedDuration);
-
         }
 
 
@@ -145,7 +145,15 @@ namespace Blaze.SoundPlayer
             throw new NotImplementedException();
         }
 
+        public void PlaySync(SimpleSound track, float freq, int fixedDuration)
+        {
+            PlaySync(FactoryCreate(track), freq,fixedDuration);
+        }
 
+        public void PlaySync(IList<SimpleSound> tracks, float freq, int fixedDuration)
+        {
+            PlaySync(FactoryCreate(tracks), freq, fixedDuration);
+        }
 
         public bool Stop()
         {

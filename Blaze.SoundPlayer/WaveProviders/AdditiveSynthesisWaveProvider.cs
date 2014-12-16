@@ -8,14 +8,27 @@ using NAudio.Wave;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    class AdditiveSynthesisWaveProvider : WaveProvider16, IWaveProviderExposer
+    internal class AdditiveSynthesisWaveProvider : WaveProvider16, IWaveProviderExposer
     {
         int sample;
         List<SimpleSound> mWaves;
-        public AdditiveSynthesisWaveProvider(IList<SimpleSound> waves)
+        List<float> mFreq;
+        List<float> mAmps;
+        public AdditiveSynthesisWaveProvider(IList<SimpleSound> waves, IList<float> freqs =null, IList<float> amplitudes=null)
         {
             mWaves = new List<SimpleSound>(waves.Count);
             mWaves.AddRange(waves);
+            mFreq = new List<float>(waves.Count);
+            mAmps = new List<float>(waves.Count);
+            if (freqs != null)
+                mFreq.AddRange(freqs);
+            else
+                mFreq = null;
+            
+            if (amplitudes != null)
+                mAmps.AddRange(amplitudes);
+            else
+                mAmps = null;
             Amplitude = 5;
             Frequency = 440;
         }
@@ -28,8 +41,13 @@ namespace Blaze.SoundPlayer.WaveProviders
             for (int n = 0; n < sampleCount; n++)
             {
                 int res = 0;
-                foreach (SimpleSound w in mWaves)
-                    res += Amplitude * w.Get(sampleRate, sample, Frequency);
+                for (var ii = 0; ii < mWaves.Count;++ii)
+                    res += (short)
+                        ( 
+                            (mAmps !=null? mAmps[ii]: Amplitude) *
+                            mWaves[ii]
+                            .Get(sampleRate, sample, mFreq!= null? mFreq[ii]:Frequency) 
+                        );
 
                 buffer[n + offset] = (short)res;
                 sample++;
@@ -49,7 +67,7 @@ namespace Blaze.SoundPlayer.WaveProviders
             set;
         }
 
-        public short Amplitude
+        public float Amplitude
         {
             get;
             set;

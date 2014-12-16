@@ -7,7 +7,7 @@ using NAudio.Wave;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    public class SineWaveProvider : WaveProvider16 , IWaveProviderExposer
+    internal class SineWaveProvider : WaveProvider16, IWaveProviderExposer
     {
         int sample;
  
@@ -20,7 +20,7 @@ namespace Blaze.SoundPlayer.WaveProviders
 
         public int Resolution { get; protected set; } 
         public float Frequency { get; set; }
-        public short Amplitude { get; set; }
+        public float Amplitude { get; set; }
  
         public override int Read(short[] buffer, int offset, int sampleCount)
         {

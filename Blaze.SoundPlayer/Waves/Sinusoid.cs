@@ -11,6 +11,7 @@ namespace Blaze.SoundPlayer.Waves
         public Sinusoid(int resolution)
             : base(resolution)
         {
+            Initialize();
         }
 
         public override void Initialize()

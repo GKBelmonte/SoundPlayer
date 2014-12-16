@@ -11,6 +11,7 @@ namespace Blaze.SoundPlayer.Waves
         public Sawtooth(int resolution)
             : base(resolution)
         {
+            Initialize();
         }
 
         public override void Initialize()

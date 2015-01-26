@@ -1,0 +1,25 @@
+﻿<Window x:Class="SoundFurnace.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" Height="350" Width="525">
+    
+
+    <Grid>
+        <Menu IsMainMenu="True" >
+            <MenuItem Header="_File" >
+                <MenuItem Header="_New..."  Click="New_Click"/>
+                <Separator />
+                <MenuItem Header="_Open..." />
+                <Separator />
+                <MenuItem Header="_Save" />
+                <MenuItem Header="_Save As..." />
+                <Separator />
+                <MenuItem Header="_Exit" />
+            </MenuItem>
+            <MenuItem Header="_Edit" />
+            <MenuItem Header="_View" />
+            <MenuItem Header="_Window" />
+            <MenuItem Header="_Help" />
+        </Menu>
+    </Grid>
+</Window>

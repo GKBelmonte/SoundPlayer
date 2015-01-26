@@ -19,7 +19,7 @@ namespace Blaze.SoundPlayer.Waves
             double step = Math.PI * 2.0 / ((double)Resolution);
             for (var ii = 0; ii < Resolution; ++ii)
             {
-                _data[ii] = (short)((short.MaxValue/100) * Math.Cos(step * ii));
+                _data[ii] = (float)((WaveProviders.WaveProviderCommon.DefaultAmplitude) * Math.Cos(step * ii));
             }
         }
     }

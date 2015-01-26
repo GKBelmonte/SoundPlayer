@@ -19,16 +19,5 @@ namespace Blaze.SoundPlayer
             {
             }
         }
-
-        public AttackDecaySustainRelease ADSR
-        {
-            get
-            {
-                throw new System.NotImplementedException();
-            }
-            set
-            {
-            }
-        }
     }
 }

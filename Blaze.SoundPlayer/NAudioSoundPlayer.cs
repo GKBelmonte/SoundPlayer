@@ -14,11 +14,19 @@ namespace Blaze.SoundPlayer
 
     public class NAudioSoundPlayer : ISoundPlayer
     {
-
+        protected System.Timers.Timer mTimer;
         public NAudioSoundPlayer()
         {
             mWaitForPlayBackStopped = new AutoResetEvent(false);
             mSampleFrequency = 1024 * 16;
+            mTimer = new System.Timers.Timer();
+            mTimer.Elapsed += mTimer_Elapsed;
+        }
+
+        void mTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            IsPlaying = false;
+            mTimer.Stop();
         }
 
         public bool IsPlaying
@@ -51,6 +59,9 @@ namespace Blaze.SoundPlayer
         void mWaveOut_PlaybackStopped(object sender, StoppedEventArgs e)
         {
             mWaitForPlayBackStopped.Set();
+            if (mTimer.Enabled)
+                mTimer.Stop();
+            IsPlaying = false;
         }
 
         public static IWaveProviderExposer FactoryCreate(Sounds.SimpleSound sound)
@@ -113,12 +124,12 @@ namespace Blaze.SoundPlayer
         }
 
 
-        public void PlaySync(short[] data)
+        public void PlaySync(float[] data)
         {
             throw new NotImplementedException();
         }
 
-        public void PlaySync(IList<short[]> datas)
+        public void PlaySync(IList<float[]> datas)
         {
             throw new NotImplementedException();
         }
@@ -175,12 +186,12 @@ namespace Blaze.SoundPlayer
             throw new NotImplementedException();
         }
 
-        public void PlayAsync(short[] data)
+        public void PlayAsync(float[] data)
         {
             throw new NotImplementedException();
         }
 
-        public void PlayAsync(IList<short[]> datas)
+        public void PlayAsync(IList<float[]> datas)
         {
             throw new NotImplementedException();
         }
@@ -197,7 +208,9 @@ namespace Blaze.SoundPlayer
 
         public void PlayAsync(WaveGenerator track, float freq, int fixedDuration)
         {
-            throw new NotImplementedException();
+            var wave = new WaveGeneratorProvider(track);
+            wave.Frequency = freq;
+            PlayAsync(wave, fixedDuration);
         }
 
         public void PlayAsync(IList<WaveGenerator> tracks, IList<float> freq, int fixedDuration)
@@ -207,12 +220,56 @@ namespace Blaze.SoundPlayer
 
         public void PlayAsync(Wave track, float freq, int fixedDuration)
         {
-            throw new NotImplementedException();
+            var wave = new FixedDataWaveProvider(track);
+            wave.Frequency = freq;
+            PlayAsync(wave, fixedDuration);
         }
 
         public void PlayAsync(IList<Wave> tracks, IList<float> freq, int fixedDuration)
         {
-            throw new NotImplementedException();
+            var wave = new CompositeFixedDataWaveProvider(tracks);
+            wave.Frequencies = freq;
+            PlayAsync(wave, fixedDuration);
+        }
+
+        public void PlayAsync(SimpleSound track, float freq, int fixedDuration)
+        {
+            PlayAsync(FactoryCreate(track), freq, fixedDuration);
+        }
+
+        public void PlayAsync(IList<SimpleSound> tracks, float freq, int fixedDuration)
+        {
+            PlayAsync(FactoryCreate(tracks), freq, fixedDuration);
+        }
+
+        public void PlayAsync(IWaveProviderExposer wave, int fixedDuration = -1)
+        {
+            if (fixedDuration == 0)
+                return;
+            wave.SetWaveFormat(mSampleFrequency, 1);
+            lock (mWaveLock)
+            {
+                mWaveOut = new WaveOut();
+                if (fixedDuration == -1)
+                    mWaveOut.PlaybackStopped += mWaveOut_PlaybackStopped;
+                mWaveOut.Init((IWaveProvider)wave);
+                mWaveOut.Play();
+            }
+
+            if(fixedDuration > 0)
+            {
+                IsPlaying = true;
+                mTimer.Interval = fixedDuration;
+                mTimer.Start();
+            }
+        }
+
+        public void PlayAsync(IWaveProviderExposer wave, float freq, int fixedDuration = -1)
+        {
+            wave.Frequency = freq;
+            PlayAsync(wave, fixedDuration);
         }
     }
+
+
 }

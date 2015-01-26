@@ -9,14 +9,14 @@ using System.Collections;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    internal class CompositeFixedDataWaveProvider : WaveProvider16 , IWaveProviderExposer
+    internal class CompositeFixedDataWaveProvider : WaveProvider32 , IWaveProviderExposer
     {
         int sample;
         readonly protected List<FixedDataWaveProvider> _waves;
         public CompositeFixedDataWaveProvider()
         {
             Frequency = 1000;
-            Amplitude = 5;
+            AmplitudeMultiplier = 1;//WaveProviderCommon.DefaultAmplitude;
             _waves = new List<FixedDataWaveProvider>();
             Resolution = 1024 * 4;
         }
@@ -59,13 +59,13 @@ namespace Blaze.SoundPlayer.WaveProviders
         /// <summary>
         /// 0 - 100 (%)
         /// </summary>
-        public float Amplitude
+        public float AmplitudeMultiplier
         {
             get { return _amplitude; } 
             set { if (value < 0) _amplitude = 0; else if (value > 100) _amplitude = 100; else _amplitude = value; } 
         }
 
-        public override int Read(short[] buffer, int offset, int sampleCount)
+        public override int Read(float[] buffer, int offset, int sampleCount)
         {
             sample += sampleCount;
             foreach (FixedDataWaveProvider wave in _waves)

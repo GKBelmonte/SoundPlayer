@@ -8,14 +8,14 @@ using Blaze.SoundPlayer.Sounds;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    internal class SimpleSoundProvider : WaveProvider16, IWaveProviderExposer
+    internal class SimpleSoundProvider : WaveProvider32, IWaveProviderExposer
     {
         int sample;
         SimpleSound mSound;
         public SimpleSoundProvider(SimpleSound sound)
         {
             mSound = sound;
-            Amplitude = 15;
+            AmplitudeMultiplier = 1;// WaveProviderCommon.DefaultAmplitude;
         }
         public int Resolution
         {
@@ -29,18 +29,18 @@ namespace Blaze.SoundPlayer.WaveProviders
             set;
         }
 
-        public float Amplitude
+        public float AmplitudeMultiplier
         {
             get;
             set;
         }
 
-        public override int Read(short[] buffer, int offset, int sampleCount)
+        public override int Read(float[] buffer, int offset, int sampleCount)
         {
             int sampleRate = WaveFormat.SampleRate;
             for (int n = 0; n < sampleCount; n++)
             {
-                buffer[n + offset] = (short)(Amplitude * mSound.Get(sampleRate, sample, Frequency));
+                buffer[n + offset] = (AmplitudeMultiplier * mSound.Get(sampleRate, sample, Frequency));
                 sample++;
             }
             return sampleCount;

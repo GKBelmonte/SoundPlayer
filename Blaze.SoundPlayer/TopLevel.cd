@@ -3,22 +3,12 @@
   <Class Name="Blaze.SoundPlayer.Track">
     <Position X="1.75" Y="1" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>IAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>Track.cs</FileName>
     </TypeIdentifier>
-    <ShowAsAssociation>
-      <Property Name="ADSR" />
-    </ShowAsAssociation>
     <ShowAsCollectionAssociation>
       <Property Name="Notes" />
     </ShowAsCollectionAssociation>
-  </Class>
-  <Class Name="Blaze.SoundPlayer.AttackDecaySustainRelease">
-    <Position X="3.5" Y="3" Width="1.5" />
-    <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>AttackDecaySustainRelease.cs</FileName>
-    </TypeIdentifier>
   </Class>
   <Struct Name="Blaze.SoundPlayer.Note" Collapsed="true">
     <Position X="1.75" Y="3" Width="1.5" />

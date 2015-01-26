@@ -23,12 +23,12 @@ namespace Blaze.SoundPlayer.TestConsoleApp
             //player4.PlaySync(wav, 440, 1000);
 
             //Console.WriteLine("fixed data sawtooth 440");
-            //Wave wav2 = new Sawtooth(4 * 1024);
+            Wave wav2 = new Sawtooth(4 * 1024);
             //Console.ReadKey(false);
             //player4.PlaySync(wav2, 440, 1000);
 
             //Console.WriteLine("wave addition sin + saw");
-            
+
             //Console.ReadKey(false);
             //player4.PlaySync(wav + wav2, 440, 1000);
 
@@ -54,8 +54,8 @@ namespace Blaze.SoundPlayer.TestConsoleApp
 
             //Console.WriteLine("Freq mod sinusoid");
             //Console.ReadKey(false);
-            //var sound2 = new SimpleSound(new WaveGenerator(SinWaveGen), null, new FrequencyModulator(FreqMod));
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound2), 440, 1000);
+            //var sound2 = new SimpleSound(new WaveGenerator(SinWaveGen), null, new FrequencyModulator(FreqMod110));
+            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound2), 440, 4000);
 
             //Console.WriteLine("Fixed data sinusoid wave gen");
             //Console.ReadKey(false);
@@ -71,25 +71,25 @@ namespace Blaze.SoundPlayer.TestConsoleApp
             //Console.WriteLine("Multiple sound provider");
             //var sound5 = new SimpleSound(new WaveGenerator(SinWaveGen), null, new FrequencyModulator(FreqMod2));
 
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound2), 440, 500);
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound5), 440, 500);
+            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound2), 440, 3000);
+            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound5), 440, 3000);
             //Console.ReadKey(false);
             //var sounds = new List<SimpleSound>(2);
             //sounds.Add(sound5);
             //sounds.Add(sound2);
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sounds), 440, 1000);
+            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sounds), 440, 6000);
 
-            Console.WriteLine("Square wave");
-            Console.ReadKey(false);
-            sound = new SimpleSound(test2.WaveGenerator);
-            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 1000);
+            //Console.WriteLine("Square wave");
+            //Console.ReadKey(false);
+            //sound = new SimpleSound(test2.WaveGenerator);
+            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 1000);
 
             //Console.WriteLine("Sin wave 2nd degree mod");
             //Console.ReadKey(false);
             //sound = new SimpleSound(test2.WaveGenerator, freqMod: new FrequencyModulator(FreqMod2ndDegree));
             //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
 
-            //Console.WriteLine("Square wave FM");
+            //Console.WriteLine("Square wave FM by sinusoid");
             //Console.ReadKey(false);
             //sound = new SimpleSound(test2.WaveGenerator, freqMod: new FrequencyModulator(FreqMod));
             //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 3000);
@@ -109,38 +109,56 @@ namespace Blaze.SoundPlayer.TestConsoleApp
             //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(
             //    new SimpleSound[] { sound, sound, sound, sound },
             //    new float[] { 440, 880, 660, 1320 },
-            //    new float[] { 10, 5.0f, 2.5f, 2.25f }
+            //    new float[] { 1f, 0.5f, 0.25f, 0.125f }
             //    ), 440, 2000);
 
-            Console.WriteLine("Sinusoid FM by square");
+            //Console.WriteLine("Sinusoid FM by square");
+            //Console.ReadKey(false);
+            //sound = new SimpleSound
+            //    (
+            //        test.WaveGenerator, 
+            //        new EnvelopeGenerator(Adsr1), 
+            //        new FrequencyModulator((rate,sample)=>(10* test2.WaveGenerator(rate,sample,4f) ) )
+            //    );
+
+            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
+
+            //Console.WriteLine("Square FM by sinusoid");
+            //Console.ReadKey(false);
+            //sound = new SimpleSound
+            //    (
+            //        test2.WaveGenerator,
+            //        null,
+            //        new FrequencyModulator((a,b)=>(FreqMod(a,b,220.0f)))
+            //       );
+
+            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
+
+            //Console.WriteLine("Sinusoid FM by deep harmonic");
+            //Console.ReadKey(false);
+            //sound = new SimpleSound
+            //    (
+            //        test.WaveGenerator,
+            //        null,
+            //        new FrequencyModulator((a, b) => (FreqMod(a, b, 27.5f)))
+            //    );
+
+            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
+
             Console.ReadKey(false);
-            sound = new SimpleSound
-                (
-                    test.WaveGenerator, 
-                    new EnvelopeGenerator(Adsr1), 
-                    new FrequencyModulator((rate,sample)=>(0.004f* test2.WaveGenerator(rate,sample,4f) ) )
-                );
-
-            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
-
-            Console.WriteLine("Square FM by sinusoid");
-            Console.ReadKey(false);
-            sound = new SimpleSound
-                (
-                    test2.WaveGenerator,
-                    null,
-                    new FrequencyModulator((a,b)=>(FreqMod(a,b,220.0f)))
-                );
-
-            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
-
+            Console.WriteLine();
+            var A0 = new Note("A", 0, 0, 0);
+            for (var ii = 0; ii < 128; ++ii)
+            {
+                Console.WriteLine("{0} @ {1}", (A0 + ii).ToString().PadRight(4), (A0 + ii).GetFrequency().ToString().PadLeft(8));
+            }
             Console.ReadKey(false);
         }
 
         static float FreqMod(int sampleRate, int sampleNumber, float freq)
         {
             var t = (float)sampleNumber / (float)sampleRate;
-            double amp = 5;
+            double amp = 1;
             //10 hz up and down at 10hz
             return (float)(amp * Math.Sin((2 * Math.PI * t * freq)));
         }
@@ -152,11 +170,12 @@ namespace Blaze.SoundPlayer.TestConsoleApp
 
         static float FreqMod2(int sampleRate, int sampleNumber)
         {
-            var t = (float)sampleNumber / (float)sampleRate;
-            double freq = 220;
-            double amp = 1;
-            //10 hz up and down at 10hz
-            return (float)(amp * Math.Sin((2 * Math.PI * t * freq)));
+            return FreqMod(sampleRate, sampleNumber, 220);
+        }
+
+        static float FreqMod110(int sampleRate, int sampleNumber)
+        {
+            return FreqMod(sampleRate, sampleNumber, 110);
         }
 
         static float FreqMod2ndDegree(int sampleRate, int sampleNumber)
@@ -170,18 +189,18 @@ namespace Blaze.SoundPlayer.TestConsoleApp
         }
 
         static Sinusoid test = new Sinusoid(1024);
-        static short FixedSinWaveGen(int sampleRate, int sampleNumber, float freq)
+        static float FixedSinWaveGen(int sampleRate, int sampleNumber, float freq)
         {
             return test[sampleNumber,(freq*test.Resolution/sampleRate)];
         }
 
-        static short SinWaveGen(int sampleRate, int sampleNumber, float freq)
+        static float SinWaveGen(int sampleRate, int sampleNumber, float freq)
         {
-            return (short)(300 * Math.Sin((2 * Math.PI * sampleNumber * freq) / sampleRate));
+            return (float)(AmpDef * Math.Sin((2 * Math.PI * sampleNumber * freq) / sampleRate));
         }
 
         static Square test2 = new Square(1024*8, 512*8);
-        static short SquareWaveGen(int sampleRate, int sampleNumber, float freq)
+        static float SquareWaveGen(int sampleRate, int sampleNumber, float freq)
         {
             //return test[sampleNumber, (freq * test.Resolution / sampleRate)];
             double t = (double)sampleNumber / (double)sampleRate;
@@ -190,15 +209,16 @@ namespace Blaze.SoundPlayer.TestConsoleApp
             //var basicT = t - numOfPer*per;
             double basicT = t - Math.Floor(t * freq) / freq;
             var width = 0.5 / freq;
-            var amp = 300;
-            return (short)((t < width) ? amp : -amp);
+            var amp = AmpDef;
+            return (float)((t < width) ? amp : -amp);
         }
 
-        static short ClippedSinWaveGen(int sampleRate, int sampleNumber, float freq)
+        static float AmpDef = WaveProviderCommon.DefaultAmplitude;
+        static float ClippedSinWaveGen(int sampleRate, int sampleNumber, float freq)
         {
-            var res = (short)(1500 * Math.Sin((2 * Math.PI * sampleNumber * freq) / sampleRate));
-            if (res > 300) return 300;
-            if (res < -300) return -300;
+            var res = (float)(AmpDef*4 * Math.Sin((2 * Math.PI * sampleNumber * freq) / sampleRate));
+            if (res > AmpDef) return AmpDef;
+            if (res < -AmpDef) return -AmpDef;
             else return res;
         }
 
@@ -218,5 +238,7 @@ namespace Blaze.SoundPlayer.TestConsoleApp
                 return (float)(1 - Math.Exp(-(t) / attackTau));
             
         }
+
+
     }
 }

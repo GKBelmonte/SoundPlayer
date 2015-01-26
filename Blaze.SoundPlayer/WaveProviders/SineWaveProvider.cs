@@ -7,27 +7,27 @@ using NAudio.Wave;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    internal class SineWaveProvider : WaveProvider16, IWaveProviderExposer
+    internal class SineWaveProvider : WaveProvider32, IWaveProviderExposer
     {
         int sample;
  
         public SineWaveProvider()
         {
             Frequency = 1000;
-            Amplitude = 3500;
+            AmplitudeMultiplier =1;// WaveProviderCommon.DefaultAmplitude;
             Resolution = -1;
         }
 
         public int Resolution { get; protected set; } 
         public float Frequency { get; set; }
-        public float Amplitude { get; set; }
+        public float AmplitudeMultiplier { get; set; }
  
-        public override int Read(short[] buffer, int offset, int sampleCount)
+        public override int Read(float[] buffer, int offset, int sampleCount)
         {
             int sampleRate = WaveFormat.SampleRate;
             for (int n = 0; n < sampleCount; n++)
             {
-                buffer[n+offset] = (short)(Amplitude * Math.Sin((2 * Math.PI * sample * Frequency) / sampleRate));
+                buffer[n+offset] = (float) (AmplitudeMultiplier * Math.Sin((2 * Math.PI * sample * Frequency) / sampleRate));
                 sample++;
                 if (sample >= sampleRate) sample = 0;
             }

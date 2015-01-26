@@ -8,12 +8,12 @@ using NAudio.Wave;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    internal class AdditiveSynthesisWaveProvider : WaveProvider16, IWaveProviderExposer
+    internal class AdditiveSynthesisWaveProvider : WaveProvider32, IWaveProviderExposer
     {
-        int sample;
-        List<SimpleSound> mWaves;
-        List<float> mFreq;
-        List<float> mAmps;
+        protected int sample;
+        protected List<SimpleSound> mWaves;
+        protected List<float> mFreq;
+        protected List<float> mAmps;
         public AdditiveSynthesisWaveProvider(IList<SimpleSound> waves, IList<float> freqs =null, IList<float> amplitudes=null)
         {
             mWaves = new List<SimpleSound>(waves.Count);
@@ -29,27 +29,29 @@ namespace Blaze.SoundPlayer.WaveProviders
                 mAmps.AddRange(amplitudes);
             else
                 mAmps = null;
-            Amplitude = 5;
+            AmplitudeMultiplier = 1;//WaveProviderCommon.DefaultAmplitude;
             Frequency = 440;
         }
 
 
 
-        public override int Read(short[] buffer, int offset, int sampleCount)
+        public override int Read(float[] buffer, int offset, int sampleCount)
         {
             int sampleRate = WaveFormat.SampleRate;
             for (int n = 0; n < sampleCount; n++)
             {
-                int res = 0;
+                var res = 0f;
                 for (var ii = 0; ii < mWaves.Count;++ii)
-                    res += (short)
+                    res +=
                         ( 
-                            (mAmps !=null? mAmps[ii]: Amplitude) *
+                            (mAmps !=null ? 
+                                mAmps[ii]: 
+                                AmplitudeMultiplier) *
                             mWaves[ii]
                             .Get(sampleRate, sample, mFreq!= null? mFreq[ii]:Frequency) 
                         );
 
-                buffer[n + offset] = (short)res;
+                buffer[n + offset] = res;
                 sample++;
             }
             return sampleCount;
@@ -67,7 +69,7 @@ namespace Blaze.SoundPlayer.WaveProviders
             set;
         }
 
-        public float Amplitude
+        public float AmplitudeMultiplier
         {
             get;
             set;

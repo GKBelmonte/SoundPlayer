@@ -10,7 +10,7 @@ namespace Blaze.SoundPlayer.WaveProviders
     {
         int Resolution { get; }
         float Frequency { get; set; }
-        float Amplitude { get; set; }
+        float AmplitudeMultiplier { get; set; }
         /// <summary>
         /// Allows you to specify the sample rate and channels for this WaveProvider
         ///    (should be initialised before you pass it to a wave player)
@@ -18,6 +18,6 @@ namespace Blaze.SoundPlayer.WaveProviders
         /// <param name="sampleRate"></param>
         /// <param name="channels"></param>
         void SetWaveFormat(int sampleRate, int channels);
-        int Read(short[] buffer, int offset, int sampleCount);
+        int Read(float[] buffer, int offset, int sampleCount);
     }
 }

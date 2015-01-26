@@ -10,7 +10,7 @@ namespace Blaze.SoundPlayer.WaveProviders
     {
         static WaveProviderCommon()
         {
-            DefaultAmplitude = 5;
+            DefaultAmplitude = 0.10f;
             DefaultPhase = 0;
             DefaultFrequency = 440;
         }
@@ -20,10 +20,10 @@ namespace Blaze.SoundPlayer.WaveProviders
             set;
         }
 
-        static public short DefaultAmplitude
+        static public float DefaultAmplitude
         { get; set; }
 
-        static public int DefaultPhase
+        static public float DefaultPhase
         { get; set; }
     }
 }

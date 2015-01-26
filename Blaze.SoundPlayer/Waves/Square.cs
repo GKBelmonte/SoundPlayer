@@ -19,16 +19,17 @@ namespace Blaze.SoundPlayer.Waves
 
         public override void Initialize()
         {
-            var sum=0;
+            var max = WaveProviders.WaveProviderCommon.DefaultAmplitude;
+            var sum=0f;
             for (var ii = 0; ii < Resolution; ++ii)
             {
-                _data[ii] = (short) (ii < Width ? short.MaxValue / 128 : -short.MaxValue / 128);
+                _data[ii] = (ii < Width ? max : -max);
                 sum += _data[ii];
             }
             sum = sum / Resolution;//remove dc component
             for (var ii = 0; ii < Resolution; ++ii)
             {
-                _data[ii] -= (short)sum;
+                _data[ii] -= sum;
             }
         }
     }

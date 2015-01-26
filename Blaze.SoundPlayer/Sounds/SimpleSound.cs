@@ -20,16 +20,35 @@ namespace Blaze.SoundPlayer.Sounds
             if (wave == null)
                 throw new ArgumentNullException("wave");
             mWave = wave;
-
         }
 
-        public short Get(int sampleRate, int sample, float freq)
+        public float Get(int sampleRate, int sample, float freq)
         {
-            return (short)
+            bool dither = false;
+            if (Length != -1 && 1000 * sample / sampleRate > Length)
+            {
+                DonePlaying = true;
+                return 0;
+            }
+
+            if(dither)
+                return 
                 (
                     mEnvelope(sampleRate,sample)
                     *
-                    mWave
+                     ((float)((short) (100 * mWave
+                    (
+                        sampleRate,
+                        (int)(sample + mPhaseMod(sampleRate, sample)),
+                        (freq + mFreqMod(sampleRate, sample))
+                    ))))/100
+                );
+            else
+                return
+                (
+                    mEnvelope(sampleRate, sample)
+                    *
+                      mWave
                     (
                         sampleRate,
                         (int)(sample + mPhaseMod(sampleRate, sample)),
@@ -47,6 +66,17 @@ namespace Blaze.SoundPlayer.Sounds
         {
             return 0;
         }
+
+        /// <summary>
+        /// True if the sound is done playing and it can be removed from the queue
+        /// </summary>
+        public bool DonePlaying { get; protected set; }
+
+        /// <summary>
+        /// The length in milliseconds the sound should play for.
+        /// -1 for continious sounds. 
+        /// </summary>
+        public int Length { get; set; }
 
         private static EnvelopeGenerator _identityEnvelope = new EnvelopeGenerator(identityEnvelopeGenerator);
         private static FrequencyModulator _identityFreq=new FrequencyModulator(identityModulator); 

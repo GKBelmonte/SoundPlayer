@@ -7,14 +7,14 @@ using NAudio.Wave;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    internal class WaveGeneratorProvider : WaveProvider16, IWaveProviderExposer
+    internal class WaveGeneratorProvider : WaveProvider32, IWaveProviderExposer
     {
         readonly WaveGenerator _wave;
         public WaveGeneratorProvider (WaveGenerator waveGen)
         {
             _wave = waveGen;
             Frequency = WaveProviderCommon.DefaultFrequency;
-            Amplitude = WaveProviderCommon.DefaultAmplitude;
+            AmplitudeMultiplier = 1;//WaveProviderCommon.DefaultAmplitude;
         }
 
         public int Resolution
@@ -29,18 +29,18 @@ namespace Blaze.SoundPlayer.WaveProviders
             set;
         }
 
-        public float Amplitude
+        public float AmplitudeMultiplier
         {
             get;
             set;
         }
         int sample;
-        public override int Read(short[] buffer, int offset, int count)
+        public override int Read(float[] buffer, int offset, int count)
         {
             int sampleRate = WaveFormat.SampleRate;
             for (int n = 0; n < count; n++)
             {
-                buffer[n + offset] = (short)(Amplitude * _wave(sampleRate,sample,Frequency));
+                buffer[n + offset] = (AmplitudeMultiplier * _wave(sampleRate,sample,Frequency));
                 sample++;
             }
             return count;

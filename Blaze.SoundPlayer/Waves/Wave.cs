@@ -22,24 +22,24 @@ namespace Blaze.SoundPlayer.Waves
     /// </summary>
     public class Wave
     {
-        protected short _resolution;
-        protected short[] _data;
+        protected int _resolution;
+        protected float[] _data;
         protected bool _initialized;
-        public short Resolution { get { return _resolution; } }
+        public int Resolution { get { return _resolution; } }
 
         public Wave(int resolution)
         {
-            _data = new short[resolution];
-            _resolution = (short) resolution;            
+            _data = new float[resolution];
+            _resolution =  resolution;            
         }
 
         public Wave(Wave w1, Wave w2)
         {
             _resolution = w1._resolution;
-            _data = new short[_resolution];
+            _data = new float[_resolution];
             for (var ii = 0; ii < _resolution; ++ii)
             {
-                _data[ii] = (short)(w1._data[ii] + w2._data[ii]);
+                _data[ii] = (w1._data[ii] + w2._data[ii]);
             }
             _initialized = true;
         }
@@ -52,16 +52,16 @@ namespace Blaze.SoundPlayer.Waves
                 _data[ii] = 0; //base amplitude should be 100th of maximum (2^15 - 1)/128
         }
 
-        public short this[int i]
+        public float this[int i]
         {
             get { return _data[i % _resolution]; }
         }
 
-        public short this[int i, int freqMult]
+        public float this[int i, int freqMult]
         {
             get
             {
-                return (short)(_data[(i * freqMult) % _resolution]);
+                return _data[(i * freqMult) % _resolution];
             }
         }
 
@@ -73,7 +73,7 @@ namespace Blaze.SoundPlayer.Waves
         /// <param name="i"></param>
         /// <param name="freq"></param>
         /// <returns></returns>
-        public short this[int i, double freqMult]
+        public float this[int i, double freqMult]
         {
             get 
             {
@@ -82,7 +82,7 @@ namespace Blaze.SoundPlayer.Waves
                 int closestIndex = (int)(i * freqMult);
                 double delta = this[closestIndex + 1] - this[closestIndex];
                 GetPowerAndMultiplier(freqMult, out exp, out mult);
-                return  (short)( this[closestIndex] + (delta * mult)/(MathExtensions.PowerOfTwo(exp)) );
+                return  (float)( this[closestIndex] + (delta * mult)/(MathExtensions.PowerOfTwo(exp)) );
             }
         }
 

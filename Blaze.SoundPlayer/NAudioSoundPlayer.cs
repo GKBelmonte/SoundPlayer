@@ -27,6 +27,7 @@ namespace Blaze.SoundPlayer
         {
             IsPlaying = false;
             mTimer.Stop();
+            mWaveOut.Stop();
         }
 
         public bool IsPlaying
@@ -72,6 +73,11 @@ namespace Blaze.SoundPlayer
         public static IWaveProviderExposer FactoryCreate(IList<Sounds.SimpleSound> sounds, IList<float> frq =null, IList<float> amps=null)
         {
             return new AdditiveSynthesisWaveProvider(sounds,frq,amps);
+        }
+
+        public static IInstrumentProvider FactoryCreateInstrument(IList<Sounds.SimpleSound> sounds, IList<float> frqMuls =null, IList<float> amps =null)
+        {
+            return new InstrumentProvider(sounds, frqMuls, amps);
         }
 
         public void PlaySync(IWaveProviderExposer wave, float freq, int fixedDuration = -1)

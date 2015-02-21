@@ -7,6 +7,7 @@ using Blaze.SoundPlayer;
 using Blaze.SoundPlayer.Sounds;
 using Blaze.SoundPlayer.WaveProviders;
 using Blaze.SoundPlayer.Waves;
+using System.Threading;
 namespace Blaze.SoundPlayer.TestConsoleApp
 {
     class Program
@@ -16,14 +17,13 @@ namespace Blaze.SoundPlayer.TestConsoleApp
             ISoundPlayer player4 = new NAudioSoundPlayer();
             player4.SampleFrequency = 22000;
             SimpleSound sound;
-            //Wave wav = new Sinusoid(4 * 1024);
-
+            Wave wav = new Sinusoid(4 * 1024);
+            Wave wav2 = new Sawtooth(4 * 1024);;
             //Console.WriteLine("fixed data sinusoid 440");
             //Console.ReadKey(false);
             //player4.PlaySync(wav, 440, 1000);
 
             //Console.WriteLine("fixed data sawtooth 440");
-            Wave wav2 = new Sawtooth(4 * 1024);
             //Console.ReadKey(false);
             //player4.PlaySync(wav2, 440, 1000);
 
@@ -116,9 +116,9 @@ namespace Blaze.SoundPlayer.TestConsoleApp
             //Console.ReadKey(false);
             //sound = new SimpleSound
             //    (
-            //        test.WaveGenerator, 
-            //        new EnvelopeGenerator(Adsr1), 
-            //        new FrequencyModulator((rate,sample)=>(10* test2.WaveGenerator(rate,sample,4f) ) )
+            //        test.WaveGenerator,
+            //        new EnvelopeGenerator(Adsr1),
+            //        new FrequencyModulator((rate, sample) => (10 * test2.WaveGenerator(rate, sample, 4f)))
             //    );
 
             //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
@@ -129,7 +129,7 @@ namespace Blaze.SoundPlayer.TestConsoleApp
             //    (
             //        test2.WaveGenerator,
             //        null,
-            //        new FrequencyModulator((a,b)=>(FreqMod(a,b,220.0f)))
+            //        new FrequencyModulator((a, b) => (FreqMod(a, b, 220.0f)))
             //       );
 
             //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
@@ -145,6 +145,38 @@ namespace Blaze.SoundPlayer.TestConsoleApp
 
             //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
 
+
+            Console.WriteLine("Async sound");
+            Console.ReadKey(false);
+            sound = new SimpleSound
+                (
+                    test.WaveGenerator,
+                    null,
+                    null
+                );
+            player4.PlayAsync(sound, 440, 1000);
+            Thread.Sleep(500);
+
+
+            Console.WriteLine("Instrument triggable sound");
+            Console.ReadKey(false);
+            IInstrumentProvider inst = NAudioSoundPlayer.FactoryCreateInstrument(
+                new SimpleSound[] { sound }
+                //new float[] { 1f, 2f, 3f }, 
+                //new float[] { 1f, 0.5f, 0.25f }
+                );
+            inst.Duration = 2000f;
+            inst.AmplitudeMultiplier = 1.0f;
+            player4.PlayAsync(inst, 440, 2000);
+            inst.NoteOn(220f, 1.0f);
+            Thread.Sleep(500);
+            inst.NoteOn(330f, 1.0f);
+            Thread.Sleep(500);
+            inst.NoteOn(440f, 1.0f);
+            Thread.Sleep(1000);
+
+
+            Console.WriteLine("Note to freq");
             Console.ReadKey(false);
             Console.WriteLine();
             var A0 = new Note("A", 0, 0, 0);

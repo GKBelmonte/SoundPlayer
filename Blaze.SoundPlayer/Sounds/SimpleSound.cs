@@ -20,6 +20,7 @@ namespace Blaze.SoundPlayer.Sounds
             if (wave == null)
                 throw new ArgumentNullException("wave");
             mWave = wave;
+            Length = -1;
         }
 
         public float Get(int sampleRate, int sample, float freq)

@@ -1,17 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaze.SoundPlayer", "Blaze.SoundPlayer.csproj", "{2D48F96E-AB15-4109-BAD6-F51CFEFCF190}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaze.SoundPlayer", "Blaze.SoundPlayer\Blaze.SoundPlayer.csproj", "{2D48F96E-AB15-4109-BAD6-F51CFEFCF190}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaze.SoundPlayer.TestConsoleApp", "..\Blaze.SoundPlayer.TestConsoleApp\Blaze.SoundPlayer.TestConsoleApp.csproj", "{E532BBB8-54DA-486A-A7A8-BD5F7E4B75ED}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaze.SoundPlayer.Tests", "..\Blaze.SoundPlayer.Tests\Blaze.SoundPlayer.Tests.csproj", "{0C53BF5D-4C99-4119-B171-2E16C6349250}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaze.SoundPlayer.Tests", "Blaze.SoundPlayer.Tests\Blaze.SoundPlayer.Tests.csproj", "{0C53BF5D-4C99-4119-B171-2E16C6349250}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UnitTests", "UnitTests", "{78B67848-000E-4C50-9DE9-908895EE8363}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaze.SoundForge", "..\SoundFurnace\Blaze.SoundForge.csproj", "{9DC8F688-D194-48FD-AB11-388FC6ACED52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaze.SoundForge", "SoundFurnace\Blaze.SoundForge.csproj", "{9DC8F688-D194-48FD-AB11-388FC6ACED52}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaze.SoundPlayer.TestWinForms", "..\Blaze.SoundPlayer.TestWinForms\Blaze.SoundPlayer.TestWinForms.csproj", "{322C2AC4-0F06-4B22-B4BE-9A1D7BAA10A0}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaze.SoundPlayer.TestWinForms", "Blaze.SoundPlayer.TestWinForms\Blaze.SoundPlayer.TestWinForms.csproj", "{322C2AC4-0F06-4B22-B4BE-9A1D7BAA10A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaze.SoundPlayer.TestConsoleApp", "Blaze.SoundPlayer.TestConsoleApp\Blaze.SoundPlayer.TestConsoleApp.csproj", "{E532BBB8-54DA-486A-A7A8-BD5F7E4B75ED}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		{2D48F96E-AB15-4109-BAD6-F51CFEFCF190}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D48F96E-AB15-4109-BAD6-F51CFEFCF190}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D48F96E-AB15-4109-BAD6-F51CFEFCF190}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E532BBB8-54DA-486A-A7A8-BD5F7E4B75ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E532BBB8-54DA-486A-A7A8-BD5F7E4B75ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E532BBB8-54DA-486A-A7A8-BD5F7E4B75ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E532BBB8-54DA-486A-A7A8-BD5F7E4B75ED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0C53BF5D-4C99-4119-B171-2E16C6349250}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0C53BF5D-4C99-4119-B171-2E16C6349250}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C53BF5D-4C99-4119-B171-2E16C6349250}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{322C2AC4-0F06-4B22-B4BE-9A1D7BAA10A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{322C2AC4-0F06-4B22-B4BE-9A1D7BAA10A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{322C2AC4-0F06-4B22-B4BE-9A1D7BAA10A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E532BBB8-54DA-486A-A7A8-BD5F7E4B75ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E532BBB8-54DA-486A-A7A8-BD5F7E4B75ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E532BBB8-54DA-486A-A7A8-BD5F7E4B75ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E532BBB8-54DA-486A-A7A8-BD5F7E4B75ED}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -77,6 +77,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Blaze.SoundPlayer\Blaze.SoundPlayer.csproj">
+      <Project>{2d48f96e-ab15-4109-bad6-f51cfefcf190}</Project>
+      <Name>Blaze.SoundPlayer</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

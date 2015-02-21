@@ -7,14 +7,14 @@ using Blaze.SoundPlayer.Sounds;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    internal class InstrumentProvider : AdditiveSynthesisWaveProvider
+    internal class InstrumentProvider : AdditiveSynthesisWaveProvider, IInstrumentProvider
     {
 
         protected List<Note> mNotes;
         protected List<bool> mNoteIsOn;
-        int lastOnNote;
+        int mLastOnNote;
 
-        public int Duration { get; set; }
+        public float Duration { get; set; }
 
         public InstrumentProvider(IList<SimpleSound> waves, IList<float> freqMultipliers = null, IList<float> amplitudes = null)
             : base(waves, freqMultipliers, amplitudes)
@@ -29,57 +29,73 @@ namespace Blaze.SoundPlayer.WaveProviders
                     mFreq.Add(1.0f);
                 }
             }
-            lastOnNote = 0;
+            mLastOnNote = 0;
+
+            if (mAmps == null)
+            {
+                mAmps = new List<float>();
+                foreach (SimpleSound s in mWaves)
+                {
+                    mAmps.Add(1f);
+                }
+            }
         }
 
         public override int Read(float[] buffer, int offset, int sampleCount)
         {
             int sampleRate = WaveFormat.SampleRate;
             var sampleNow = sample;
-            for (var jj = lastOnNote; jj < mNotes.Count; ++jj)
+            var atLeastANote = false;
+            if (mLastOnNote == mNotes.Count)
+                sampleCount = sampleRate/200;
+            for (int n = 0; n < sampleCount; n++)
             {
-                sample = sampleNow;//reset sample number
-                var note = mNotes[jj];
-                var start = note.mStart;
-                var freq = note.mFreq;
-                var vel = note.mVelocity;
-                if (sample - start > Duration)
-                    mNoteIsOn[jj] = false;
-                if (!mNoteIsOn[jj])
+                var res = 0f;
+
+                for (var jj = mLastOnNote; jj < mNotes.Count; ++jj)
                 {
-                    //TODO: assuming that fifo for notes
-                    lastOnNote++;
-                    break;
-                }
-                for (int n = 0; n < sampleCount; n++)
-                {
-                    var res = 0f;
+                    atLeastANote = true;
+                    //sample = sampleNow;//reset sample number
+                    var note = mNotes[jj];
+                    var start = note.mStart;
+                    var freq = note.mFreq;
+                    var vel = note.mVelocity;
+                    if ((1000f * (float)(sample - start)) / ((float)sampleRate) > Duration)
+                        mNoteIsOn[jj] = false;
+                    if (!mNoteIsOn[jj])
+                    {
+                        //TODO: assuming that fifo for notes
+                        mLastOnNote++;
+                        break;
+                    }
+
                     for (var ii = 0; ii < mWaves.Count; ++ii)
                         res +=
                             (
                                 vel
                                     *
-                                (mAmps != null ? mAmps[ii] : AmplitudeMultiplier)
+                                (mAmps[ii] * AmplitudeMultiplier)
                                     *
                                 mWaves[ii]
                                 .Get(sampleRate, sample - start, freq * mFreq[ii])
                             );
-
-                    buffer[n + offset] = res;
-                    sample++;
                 }
+
+                buffer[n + offset] = res;
+                sample++;
             }
-            return sampleCount;
+
+            return  sampleCount ;
         }
 
-        int NoteOn(float freqBase, float velocity = 1, bool sustain = false)
+        public int NoteOn(float freqBase, float velocity = 1, bool sustain = false)
         {
             mNotes.Add(new Note(freqBase,sample,velocity));
             mNoteIsOn.Add(true);
             return mNotes.Count - 1;
         }
 
-        Note NoteOff(int id)
+        public Note NoteOff(int id)
         {
             if (id >= mNotes.Count)
                 return new Note();
@@ -89,5 +105,9 @@ namespace Blaze.SoundPlayer.WaveProviders
             return note;
         }
 
+        public IList<float> AmplitudeMultipliers
+        {
+            get { return mAmps; }
+        }
     }
 }

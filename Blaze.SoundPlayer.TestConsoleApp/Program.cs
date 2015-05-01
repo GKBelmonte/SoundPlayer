@@ -19,131 +19,131 @@ namespace Blaze.SoundPlayer.TestConsoleApp
             SimpleSound sound;
             Wave wav = new Sinusoid(4 * 1024);
             Wave wav2 = new Sawtooth(4 * 1024);;
-            //Console.WriteLine("fixed data sinusoid 440");
-            //Console.ReadKey(false);
-            //player4.PlaySync(wav, 440, 1000);
+            Console.WriteLine("fixed data sinusoid 440");
+            Console.ReadKey(false);
+            player4.PlaySync(wav, 440, 1000);
 
-            //Console.WriteLine("fixed data sawtooth 440");
-            //Console.ReadKey(false);
-            //player4.PlaySync(wav2, 440, 1000);
+            Console.WriteLine("fixed data sawtooth 440");
+            Console.ReadKey(false);
+            player4.PlaySync(wav2, 440, 1000);
 
-            //Console.WriteLine("wave addition sin + saw");
+            Console.WriteLine("wave addition sin + saw");
 
-            //Console.ReadKey(false);
-            //player4.PlaySync(wav + wav2, 440, 1000);
+            Console.ReadKey(false);
+            player4.PlaySync(wav + wav2, 440, 1000);
 
 
-            //Console.WriteLine("multi wave");
-            //Console.ReadKey(false);
-            //player4.PlaySync(new Wave[] { wav, wav, wav }, new float[] { 440, 660, 880 }, 2000);
+            Console.WriteLine("multi wave");
+            Console.ReadKey(false);
+            player4.PlaySync(new Wave[] { wav, wav, wav }, new float[] { 440, 660, 880 }, 2000);
 
-            //Console.WriteLine("wave generator delegate");
-            //Console.ReadKey(false);
-            //player4.PlaySync(new WaveGenerator(SinWaveGen), 440, 1000);
-            //player4.PlaySync(wav, 440, 1000);
+            Console.WriteLine("wave generator delegate");
+            Console.ReadKey(false);
+            player4.PlaySync(new WaveGenerator(SinWaveGen), 440, 1000);
+            player4.PlaySync(wav, 440, 1000);
 
-            //Console.WriteLine("SimpleSound provider");
-            //Console.ReadKey(false);
-            //sound = new SimpleSound(new WaveGenerator(SinWaveGen), new EnvelopeGenerator(Adsr1));
-            //IWaveProviderExposer thing = NAudioSoundPlayer.FactoryCreate(sound);
-            //player4.PlaySync(thing, 440, 3000);
+            Console.WriteLine("SimpleSound provider");
+            Console.ReadKey(false);
+            sound = new SimpleSound(new WaveGenerator(SinWaveGen), new EnvelopeGenerator(Adsr1));
+            IWaveProviderExposer thing = NAudioSoundPlayer.FactoryCreate(sound);
+            player4.PlaySync(thing, 440, 3000);
 
-            //Console.WriteLine("Clipped sinusoid");
-            //Console.ReadKey(false);
-            //player4.PlaySync(new WaveGenerator(ClippedSinWaveGen), 440, 3000);
+            Console.WriteLine("Clipped sinusoid");
+            Console.ReadKey(false);
+            player4.PlaySync(new WaveGenerator(ClippedSinWaveGen), 440, 3000);
 
-            //Console.WriteLine("Freq mod sinusoid");
-            //Console.ReadKey(false);
-            //var sound2 = new SimpleSound(new WaveGenerator(SinWaveGen), null, new FrequencyModulator(FreqMod110));
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound2), 440, 4000);
+            Console.WriteLine("Freq mod sinusoid");
+            Console.ReadKey(false);
+            var sound2 = new SimpleSound(new WaveGenerator(SinWaveGen), null, new FrequencyModulator(FreqMod110));
+            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound2), 440, 4000);
 
-            //Console.WriteLine("Fixed data sinusoid wave gen");
-            //Console.ReadKey(false);
-            //test.Initialize();
-            //var sound3 = new SimpleSound(test.WaveGenerator, new EnvelopeGenerator(Adsr1));
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound3), 440, 1000);
+            Console.WriteLine("Fixed data sinusoid wave gen");
+            Console.ReadKey(false);
+            test.Initialize();
+            var sound3 = new SimpleSound(test.WaveGenerator, new EnvelopeGenerator(Adsr1));
+            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound3), 440, 1000);
 
-            //Console.WriteLine("phase modulated sinusoid");
-            //Console.ReadKey(false);
-            //var sound4 = new SimpleSound(new WaveGenerator(SinWaveGen), new EnvelopeGenerator(Adsr1), null, new PhaseModulator(FreqMod));
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound4), 440, 1000);
+            Console.WriteLine("phase modulated sinusoid");
+            Console.ReadKey(false);
+            var sound4 = new SimpleSound(new WaveGenerator(SinWaveGen), new EnvelopeGenerator(Adsr1), null, new PhaseModulator(FreqMod));
+            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound4), 440, 1000);
 
-            //Console.WriteLine("Multiple sound provider");
-            //var sound5 = new SimpleSound(new WaveGenerator(SinWaveGen), null, new FrequencyModulator(FreqMod2));
+            Console.WriteLine("Multiple sound provider");
+            var sound5 = new SimpleSound(new WaveGenerator(SinWaveGen), null, new FrequencyModulator(FreqMod2));
 
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound2), 440, 3000);
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound5), 440, 3000);
-            //Console.ReadKey(false);
-            //var sounds = new List<SimpleSound>(2);
-            //sounds.Add(sound5);
-            //sounds.Add(sound2);
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sounds), 440, 6000);
+            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound2), 440, 3000);
+            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound5), 440, 3000);
+            Console.ReadKey(false);
+            var sounds = new List<SimpleSound>(2);
+            sounds.Add(sound5);
+            sounds.Add(sound2);
+            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sounds), 440, 6000);
 
-            //Console.WriteLine("Square wave");
-            //Console.ReadKey(false);
-            //sound = new SimpleSound(test2.WaveGenerator);
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 1000);
+            Console.WriteLine("Square wave");
+            Console.ReadKey(false);
+            sound = new SimpleSound(test2.WaveGenerator);
+            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 1000);
 
-            //Console.WriteLine("Sin wave 2nd degree mod");
-            //Console.ReadKey(false);
-            //sound = new SimpleSound(test2.WaveGenerator, freqMod: new FrequencyModulator(FreqMod2ndDegree));
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
+            Console.WriteLine("Sin wave 2nd degree mod");
+            Console.ReadKey(false);
+            sound = new SimpleSound(test2.WaveGenerator, freqMod: new FrequencyModulator(FreqMod2ndDegree));
+            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
 
-            //Console.WriteLine("Square wave FM by sinusoid");
-            //Console.ReadKey(false);
-            //sound = new SimpleSound(test2.WaveGenerator, freqMod: new FrequencyModulator(FreqMod));
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 3000);
+            Console.WriteLine("Square wave FM by sinusoid");
+            Console.ReadKey(false);
+            sound = new SimpleSound(test2.WaveGenerator, freqMod: new FrequencyModulator(FreqMod));
+            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 3000);
 
-            //Console.WriteLine("Additive synthesis sinusoids");
-            //Console.ReadKey(false);
-            //sound = new SimpleSound(new WaveGenerator(SinWaveGen), new EnvelopeGenerator(Adsr1));
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(
-            //    new SimpleSound[] { sound, sound, sound, sound },
-            //    new float[] { 440, 880, 660, 1320 },
-            //    new float[] { 10, 5.0f, 2.5f, 2.25f }
-            //    ), 440, 3000);
+            Console.WriteLine("Additive synthesis sinusoids");
+            Console.ReadKey(false);
+            sound = new SimpleSound(new WaveGenerator(SinWaveGen), new EnvelopeGenerator(Adsr1));
+            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(
+                new SimpleSound[] { sound, sound, sound, sound },
+                new float[] { 440, 880, 660, 1320 },
+                new float[] { 10, 5.0f, 2.5f, 2.25f }
+                ), 440, 3000);
 
-            //Console.WriteLine("Additive synthesis sawtooths");
-            //Console.ReadKey(false);
-            //sound = new SimpleSound(wav2.WaveGenerator, new EnvelopeGenerator(Adsr1));
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(
-            //    new SimpleSound[] { sound, sound, sound, sound },
-            //    new float[] { 440, 880, 660, 1320 },
-            //    new float[] { 1f, 0.5f, 0.25f, 0.125f }
-            //    ), 440, 2000);
+            Console.WriteLine("Additive synthesis sawtooths");
+            Console.ReadKey(false);
+            sound = new SimpleSound(wav2.WaveGenerator, new EnvelopeGenerator(Adsr1));
+            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(
+                new SimpleSound[] { sound, sound, sound, sound },
+                new float[] { 440, 880, 660, 1320 },
+                new float[] { 1f, 0.5f, 0.25f, 0.125f }
+                ), 440, 2000);
 
-            //Console.WriteLine("Sinusoid FM by square");
-            //Console.ReadKey(false);
-            //sound = new SimpleSound
-            //    (
-            //        test.WaveGenerator,
-            //        new EnvelopeGenerator(Adsr1),
-            //        new FrequencyModulator((rate, sample) => (10 * test2.WaveGenerator(rate, sample, 4f)))
-            //    );
+            Console.WriteLine("Sinusoid FM by square");
+            Console.ReadKey(false);
+            sound = new SimpleSound
+                (
+                    test.WaveGenerator,
+                    new EnvelopeGenerator(Adsr1),
+                    new FrequencyModulator((rate, sample) => (10 * test2.WaveGenerator(rate, sample, 4f)))
+                );
 
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
+            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
 
-            //Console.WriteLine("Square FM by sinusoid");
-            //Console.ReadKey(false);
-            //sound = new SimpleSound
-            //    (
-            //        test2.WaveGenerator,
-            //        null,
-            //        new FrequencyModulator((a, b) => (FreqMod(a, b, 220.0f)))
-            //       );
+            Console.WriteLine("Square FM by sinusoid");
+            Console.ReadKey(false);
+            sound = new SimpleSound
+                (
+                    test2.WaveGenerator,
+                    null,
+                    new FrequencyModulator((a, b) => (FreqMod(a, b, 220.0f)))
+                   );
 
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
+            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
 
-            //Console.WriteLine("Sinusoid FM by deep harmonic");
-            //Console.ReadKey(false);
-            //sound = new SimpleSound
-            //    (
-            //        test.WaveGenerator,
-            //        null,
-            //        new FrequencyModulator((a, b) => (FreqMod(a, b, 27.5f)))
-            //    );
+            Console.WriteLine("Sinusoid FM by deep harmonic");
+            Console.ReadKey(false);
+            sound = new SimpleSound
+                (
+                    test.WaveGenerator,
+                    null,
+                    new FrequencyModulator((a, b) => (FreqMod(a, b, 27.5f)))
+                );
 
-            //player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
+            player4.PlaySync(NAudioSoundPlayer.FactoryCreate(sound), 440, 2000);
 
 
             Console.WriteLine("Async sound");
@@ -168,11 +168,11 @@ namespace Blaze.SoundPlayer.TestConsoleApp
             inst.Duration = 2000f;
             inst.AmplitudeMultiplier = 1.0f;
             player4.PlayAsync(inst, 440, 2000);
-            inst.NoteOn(220f, 1.0f);
+            inst.NoteOn("A",3, 1.0f);
             Thread.Sleep(500);
-            inst.NoteOn(330f, 1.0f);
+            inst.NoteOn("A",4, 1.0f);
             Thread.Sleep(500);
-            inst.NoteOn(440f, 1.0f);
+            inst.NoteOn("A",5, 1.0f);
             Thread.Sleep(1000);
 
 

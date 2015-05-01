@@ -42,7 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Filters\FilterBase.cs" />
+    <Compile Include="CollectionExtensions.cs" />
+    <Compile Include="Filters\Filter.cs" />
+    <Compile Include="Filters\RCLowPass.cs" />
     <Compile Include="Note.cs" />
     <Compile Include="Sounds\SimpleSound.cs" />
     <Compile Include="Track.cs" />

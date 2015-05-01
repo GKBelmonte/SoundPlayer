@@ -256,6 +256,8 @@ namespace Blaze.SoundPlayer
             lock (mWaveLock)
             {
                 mWaveOut = new WaveOut();
+                mWaveOut.DesiredLatency = 25;
+                mWaveOut.NumberOfBuffers = 4;
                 if (fixedDuration == -1)
                     mWaveOut.PlaybackStopped += mWaveOut_PlaybackStopped;
                 mWaveOut.Init((IWaveProvider)wave);

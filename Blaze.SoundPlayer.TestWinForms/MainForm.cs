@@ -17,6 +17,8 @@ namespace Blaze.SoundPlayer.TestWinForms
     {
         ISoundPlayer mSound;
         IInstrumentProvider mInstrument;
+        Dictionary<Keys, Note> mBaseKeyMapping;
+        Dictionary<Keys, Note> mKeyMapping;
         public MainForm()
         {
             InitializeComponent();
@@ -56,9 +58,47 @@ namespace Blaze.SoundPlayer.TestWinForms
             mInstrument.Duration = 1000;
             mInstrument.AmplitudeMultiplier = 1.0f;
             mSound.PlayAsync(mInstrument,220,-1);
+            
+            /*Mapping the keys*/
+            keyIsDown = new Dictionary<Keys, bool>();
+
+
+            mKeyMapping = new Dictionary<Keys, Note>();
+            mBaseKeyMapping = new Dictionary<Keys, Note>();
+            
+            mBaseKeyMapping.MapMany(
+                Keys.D1, "C", 4,
+                Keys.Q, "E", 4,
+                Keys.A, "G", 4,
+                Keys.Z, "B", 4,
+
+                Keys.D2, "D", 4,
+                Keys.W, "F", 4,
+                Keys.S, "A", 4,
+                Keys.X, "C", 5,
+
+                Keys.D3, "E", 4,
+                Keys.E, "G", 4,
+                Keys.D, "B", 4,
+                Keys.C, "D", 5,
+
+                Keys.D4, "F", 4,
+                Keys.R, "A", 4,
+                Keys.F, "C", 5,
+                Keys.V, "E", 5);
+
+            foreach (KeyValuePair<Keys, Note> pair in mBaseKeyMapping)
+                keyIsDown.Add(pair.Key, false);
+
+
+            foreach (KeyValuePair<Keys, Note> pair in mBaseKeyMapping)
+                mKeyMapping.Add(pair.Key, pair.Value);
+
+
         }
 
-        
+        static double mAttack = 10;
+        static double mDecay = 350;
 
         static float Adsr1(int sampleRate, int sampleNumber)
         {
@@ -67,13 +107,12 @@ namespace Blaze.SoundPlayer.TestWinForms
             //t = t %period
             var mults = Math.Floor(t / period);
             t = t - period * mults;
-            const double attackTau = 10;
-            const double decayTau = 350;
+
             const double attackTime = 300;
             if (t > attackTime)
-                return (float)(Math.Exp(-(t - attackTime) / decayTau));
+                return (float)(Math.Exp(-(t - attackTime) / mDecay));
             else
-                return (float)(1 - Math.Exp(-(t) / attackTau));
+                return (float)(1 - Math.Exp(-(t) / mAttack));
 
         }
 
@@ -92,116 +131,34 @@ namespace Blaze.SoundPlayer.TestWinForms
             return (float)(AmpDef * Math.Sin((2 * Math.PI * sampleNumber * freq) / sampleRate));
         }
 
-        bool [] keyIsDown = new bool[13];
+        Dictionary <Keys,bool> keyIsDown ;
 
-        int keyCodeToIndex(Keys key)
-        {
-            switch (key)
-            {
-                case Keys.A:
-                    return 0;
-
-                case Keys.S:
-                    return 2;
-
-                case Keys.D:
-                    return 4;
-
-                case Keys.F:
-                    return 5;
-
-                case Keys.G:
-                    return 7;
-
-                case Keys.H:
-                    return 9;
-
-                case Keys.J:
-                    return 11;
-
-                case Keys.K:
-                    return 12;
-
-
-                case Keys.W:
-                    return 1;
-                case Keys.E:
-                    return 3;
-
-                case Keys.T:
-                    return 6;
-                case Keys.Y:
-                    return 8;
-                case Keys.U:
-                    return 10;
-                default:
-                    return-1;
-            }
-        }
 
         void MainForm_KeyDown(object sender, KeyEventArgs e)
         {
-            int noteNumber = keyCodeToIndex(e.KeyCode);
-            if (noteNumber == -1  ||  keyIsDown[noteNumber])
+
+            bool isDown;
+            bool valid = keyIsDown.TryGetValue(e.KeyCode, out isDown);
+            if (!valid  ||  isDown)
                 return;
-            keyIsDown[noteNumber] = true;
-            switch (e.KeyCode)
-            {
-                case Keys.A:
-                    mInstrument.NoteOn("C",4);
-                    break;
-                case Keys.S:
-                    mInstrument.NoteOn("D", 4);
-                    break;
-                case Keys.D:
-                    mInstrument.NoteOn("E", 4);
-                    break;
+            keyIsDown[e.KeyCode] = true;
 
-                case Keys.F:
-                    mInstrument.NoteOn("F", 4);
-                    break;
-                case Keys.G:
-                    mInstrument.NoteOn("G", 4);
-                    break;
-                case Keys.H:
-                    mInstrument.NoteOn("A", 4);
-                    break;
-                case Keys.J:
-                    mInstrument.NoteOn("B", 4);
-                    break;
-                case Keys.K:
-                    mInstrument.NoteOn("C", 5);
-                    break;
+            var note = mKeyMapping[e.KeyCode];
+            mInstrument.NoteOn(note.mStep, note.mOctave);
 
-                case Keys.W:
-                    mInstrument.NoteOn("C#", 4);
-                    break;
-                case Keys.E:
-                    mInstrument.NoteOn("D#", 4);
-                    break;
-                case Keys.T:
-                    mInstrument.NoteOn("F#", 4);
-                    break;
+            Console.WriteLine("Down {0}",note);
 
-                case Keys.Y:
-                    mInstrument.NoteOn("G#", 4);
-                    break;
-                case Keys.U:
-                    mInstrument.NoteOn("A#", 4);
-                    break;
-                default:
-                    return;
-            } Console.WriteLine("Down {0}",noteNumber);
             //MessageBox.Show(string.Format("Value is  {0}:{1}", noteNumber, (byte)(100.0f * (155.0 * ((float)noteNumber - 60) / 12.0f))), "debug");
         }
 
         void MainForm_KeyUp(object sender, KeyEventArgs e)
         {
-            int noteNumber = keyCodeToIndex(e.KeyCode);
-            if (noteNumber == -1)
+            bool isDown;
+            bool valid = keyIsDown.TryGetValue(e.KeyCode, out isDown);
+            if (!valid)
                 return;
-            keyIsDown[noteNumber] = false;
-            Console.WriteLine("Up {0}", noteNumber);
+            keyIsDown[e.KeyCode] = false;
+            Console.WriteLine("Up {0}", mKeyMapping[e.KeyCode]);
         }
 
         private void trackBarSin_Scroll(object sender, EventArgs e)
@@ -217,6 +174,49 @@ namespace Blaze.SoundPlayer.TestWinForms
         private void trackBarSqr_Scroll(object sender, EventArgs e)
         {
             mInstrument.AmplitudeMultipliers[2] = trackBarSqr.Value / 100f;
+        }
+
+        private void trackBarKey_Scroll(object sender, EventArgs e)
+        {
+            mKeyMapping.Clear();
+            foreach (KeyValuePair<Keys, Note> pair in mBaseKeyMapping)
+                mKeyMapping.Add(pair.Key, pair.Value + trackBar1.Value);
+            labelKeyValue.Text = mKeyMapping[Keys.Q].mStep;
+        }
+
+        private void trackBarAttack_Scroll(object sender, EventArgs e)
+        {
+            mAttack = (double) trackBarAttack.Value;
+        }
+
+        private void trackBarDecay_Scroll(object sender, EventArgs e)
+        {
+            mDecay = (double) trackBarDecay.Value * 10;
+        }
+
+    }
+
+    static class Extensions
+    { 
+        static public void Map(this Dictionary<Keys,Note> self, Keys key, string note)
+        {
+            self.Add(key,new Note(note,4,0,0));   
+        }
+
+        static public void MapMany(this Dictionary<Keys, Note> self, params object[] stuff)
+        {
+            for (var ii = 0; ii < stuff.Length; ii += 3)
+            {
+                self.Add((Keys)stuff[ii], new Note((string)stuff[ii + 1], (int)stuff[ii + 2], 0, 0));
+            }
+        }
+
+        static public void AddMany<K,T>(this Dictionary<K, T> self, params object[] stuff)
+        {
+            for (var ii = 0; ii < stuff.Length; ii += 2)
+            {
+                self.Add((K)stuff[ii], (T)stuff[ii + 1]);
+            }
         }
     }
 }

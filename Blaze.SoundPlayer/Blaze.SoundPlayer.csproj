@@ -48,6 +48,7 @@
     <Compile Include="Note.cs" />
     <Compile Include="Sounds\SimpleSound.cs" />
     <Compile Include="Track.cs" />
+    <Compile Include="Utils\CircularBuffer.cs" />
     <Compile Include="WaveProviders\AdditiveSynthesisWaveProvider.cs" />
     <Compile Include="WaveProviders\CompositeFixedDataWaveProvider.cs" />
     <Compile Include="WaveProviders\FixedDataWaveProvider.cs" />

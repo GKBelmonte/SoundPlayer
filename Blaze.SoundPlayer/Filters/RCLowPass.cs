@@ -18,7 +18,7 @@ namespace Blaze.SoundPlayer.Filters
         {
             float alpha = deltaTime / (RC + deltaTime);
             float ret = mY[0] + alpha * (value - mY[0]);
-            mY[0] = ret;
+            mY.Push(ret);
             return ret;
         }
 

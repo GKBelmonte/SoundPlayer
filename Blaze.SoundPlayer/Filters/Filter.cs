@@ -10,18 +10,13 @@ namespace Blaze.SoundPlayer.Filters
     {
         public Filter(int xMem, int yMem)
         {
-            mX = new float[xMem];
-            mY = new float[yMem];
-            for (var ii = 0; ii < xMem; ++ii)
-                mX[0] = 0f;
-            for (var ii = 0; ii < yMem; ++ii)
-                mY[0] = 0f;
-            //Initialize();
+            mX = new Utils.CircularBuffer<float>(xMem);
+            mY = new Utils.CircularBuffer<float>(yMem);
         }
 
         //protected abstract void Initialize();
-        protected float[] mX;
-        protected float[] mY;
+        protected Utils.CircularBuffer<float> mX;
+        protected Utils.CircularBuffer<float> mY;
 
         abstract public float Apply(float deltaTime, float freq, float value);        
         

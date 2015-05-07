@@ -42,9 +42,9 @@ namespace Blaze.SoundPlayer
 
         static public Note operator + (Note me, int what)
         {
-            var number = NoteLetterToKeyNumber(me.mStep)+what;
-            var octaveIncrease = number / 12;
-            var newStep = KeyNumberToNoteLetter(number % 12);
+            var number = ( NoteLetterToKeyNumber(me.mStep)+what)  ;
+            var octaveIncrease = (int)Math.Floor(number / 12.0);
+            var newStep = KeyNumberToNoteLetter((number+12) % 12);
             return new Note(newStep, me.mOctave+octaveIncrease, me.mStart, me.mEnd);
         }
 

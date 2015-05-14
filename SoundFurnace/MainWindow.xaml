@@ -7,7 +7,7 @@
     <Grid>
         <Menu IsMainMenu="True" >
             <MenuItem Header="_File" >
-                <MenuItem Header="_New..."  Click="New_Click"/>
+                <MenuItem Header="_New..." />
                 <Separator />
                 <MenuItem Header="_Open..." />
                 <Separator />

@@ -8,10 +8,12 @@ namespace SoundFurnace
 {
     public class SoundComponentDefinition
     {
+        public string TypeName { get; protected set; }
         public List<string> Inputs {get; protected set;}
         public List<string> Outputs { get; protected set; }
-        public SoundComponentDefinition(List<string> inputs, List<string> outputs)
+        public SoundComponentDefinition(string name, List<string> inputs, List<string> outputs)
         {
+            TypeName = name;
             Inputs = new List<string>(inputs);
             Outputs = new List<string>(outputs);
         }
@@ -19,7 +21,7 @@ namespace SoundFurnace
         static SoundComponentDefinition()
         {
             StandardDefinitions = new Dictionary<string, SoundComponentDefinition>(10);
-            StandardDefinitions.AddDefinition("Wave", "Time,Frequency","Output");
+            StandardDefinitions.AddDefinition("Wave", "SampleRate,Sample,Frequency","Output");
             StandardDefinitions.AddDefinition("Constant", "", "Output");
         }
 
@@ -34,7 +36,7 @@ namespace SoundFurnace
             var lOutputs = outputs.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries).ToList();
             lInputs.ForEach(a => a = a.Trim());
             lOutputs.ForEach(a => a = a.Trim());
-            self.Add(name, new SoundComponentDefinition(lInputs, lOutputs));
+            self.Add(name, new SoundComponentDefinition(name ,lInputs, lOutputs));
         }
     }
 }

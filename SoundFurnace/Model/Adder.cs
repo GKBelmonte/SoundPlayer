@@ -8,7 +8,7 @@ namespace SoundFurnace.Model
 {
     class Adder : SoundComponent
     {
-        public Adder(int inputs) : base(inputs,1)
+        public Adder(int inputs) : base("Adder",inputs,1)
         {
         }
 

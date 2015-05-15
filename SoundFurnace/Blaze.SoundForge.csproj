@@ -45,6 +45,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -56,13 +58,16 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Diagram\CircuitElement.cs" />
     <Compile Include="Model\Adder.cs" />
     <Compile Include="Model\SoundComponent.cs" />
+    <Compile Include="Model\WaveComponent.cs" />
     <Compile Include="SoundComponentDefinition.cs" />
     <Compile Include="ViewModels\IOPin.cs" />
     <Compile Include="ViewModels\SoundComponentViewModel.cs" />
@@ -119,6 +124,14 @@
     <ProjectReference Include="..\..\CrossoverStuff\Core\Blaze.Core.csproj">
       <Project>{9ded0638-86eb-49e3-b3d6-d819f4bd194f}</Project>
       <Name>Blaze.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\External\Diagram.NET\Control\Diagram.NET.csproj">
+      <Project>{46fe3660-273c-474b-ba51-835f5cdeda58}</Project>
+      <Name>Diagram.NET</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Blaze.SoundPlayer\Blaze.SoundPlayer.csproj">
+      <Project>{2d48f96e-ab15-4109-bad6-f51cfefcf190}</Project>
+      <Name>Blaze.SoundPlayer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

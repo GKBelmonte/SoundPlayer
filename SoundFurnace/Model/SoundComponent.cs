@@ -9,16 +9,44 @@ namespace SoundFurnace.Model
     public abstract class SoundComponent 
     {
         public double[] Outputs { get; protected set; }
-        protected double[] Inputs { get; set; }
+        public double[] Inputs { get; set; }
         private int[] mInputLinks;
         private SoundComponent[] InputSources { get; set; }
-        
-        public SoundComponent(int inputs, int outputs)
+
+        SoundComponentDefinition mDefinition;
+
+        public string[] OutputNames { get { return mDefinition.Outputs.ToArray(); } }
+        public string[] InputNames { get { return mDefinition.Inputs.ToArray(); } }
+
+        public string TypeName { get { return mDefinition.TypeName; } } 
+
+        public SoundComponent(string name, int inputs, int outputs)
         {
-            Inputs = new double[inputs];
-            InputSources = new SoundComponent[inputs];
-            mInputLinks = new int[inputs];
-            Outputs = new double[outputs];
+            var outputNames = new string[outputs];
+            var inputNames = new string[inputs];
+            for (var ii = 0; ii < inputs; ++ii)
+                inputNames[ii] = "x" + ii;
+            for (var ii = 0; ii < outputs; ++ii)
+                outputNames[ii] = "y" + ii;
+
+            mDefinition = new SoundComponentDefinition(name, inputNames.ToList(), outputNames.ToList());
+            Initialize();
+        }
+
+        public SoundComponent(SoundComponentDefinition def)
+        {
+            mDefinition = def;
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            SoundComponentDefinition def = mDefinition;
+            Inputs = new double[def.Inputs.Count];
+            InputSources = new SoundComponent[def.Inputs.Count];
+            mInputLinks = new int[def.Inputs.Count];
+            Outputs = new double[def.Outputs.Count];
+
             mComputed = false;
         }
 

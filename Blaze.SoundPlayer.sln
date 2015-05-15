@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaze.SoundPlayer.TestConso
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blaze.Core", "..\CrossoverStuff\Core\Blaze.Core.csproj", "{9DED0638-86EB-49E3-B3D6-D819F4BD194F}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{5528AB5B-F451-483C-A765-23A1127493F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diagram.NET", "..\External\Diagram.NET\Control\Diagram.NET.csproj", "{46FE3660-273C-474B-BA51-835F5CDEDA58}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,11 +49,16 @@ Global
 		{9DED0638-86EB-49E3-B3D6-D819F4BD194F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9DED0638-86EB-49E3-B3D6-D819F4BD194F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9DED0638-86EB-49E3-B3D6-D819F4BD194F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46FE3660-273C-474B-BA51-835F5CDEDA58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46FE3660-273C-474B-BA51-835F5CDEDA58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46FE3660-273C-474B-BA51-835F5CDEDA58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46FE3660-273C-474B-BA51-835F5CDEDA58}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0C53BF5D-4C99-4119-B171-2E16C6349250} = {78B67848-000E-4C50-9DE9-908895EE8363}
+		{46FE3660-273C-474B-BA51-835F5CDEDA58} = {5528AB5B-F451-483C-A765-23A1127493F6}
 	EndGlobalSection
 EndGlobal

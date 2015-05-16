@@ -52,6 +52,8 @@ namespace SoundFurnace
             // Assign the MaskedTextBox control as the host control's child.
             host.Child = mDesigner;
             mDesigner.MouseClick += MainWindow_MouseDown;
+
+            mDesigner.Document.Action = Dalssoft.DiagramNet.DesignerAction.Connect;
             // Add the interop host control to the Grid 
             // control's collection of child controls. 
             this.DiagramHost.Children.Add(host);

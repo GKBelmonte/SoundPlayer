@@ -112,7 +112,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\CrossoverStuff\Core\Blaze.Core.csproj">
+    <ProjectReference Include="..\..\Blaze.Core\Blaze.Core\Blaze.Core.csproj">
       <Project>{9ded0638-86eb-49e3-b3d6-d819f4bd194f}</Project>
       <Name>Blaze.Core</Name>
     </ProjectReference>

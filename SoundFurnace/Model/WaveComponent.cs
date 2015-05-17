@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Blaze.SoundPlayer.Waves;
 
-namespace SoundFurnace.Model
+namespace Blaze.SoundForge.Model
 {
     class WaveComponent : SoundComponent
     {

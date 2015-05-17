@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SoundFurnace
+namespace Blaze.SoundForge
 {
     public class SoundComponentDefinition
     {
@@ -16,6 +16,11 @@ namespace SoundFurnace
             TypeName = name;
             Inputs = new List<string>(inputs);
             Outputs = new List<string>(outputs);
+        }
+
+        public override string ToString()
+        {
+            return TypeName;
         }
 
         static SoundComponentDefinition()

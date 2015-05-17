@@ -62,6 +62,7 @@
     <Compile Include="Model\WaveComponent.cs" />
     <Compile Include="SoundComponentDefinition.cs" />
     <Compile Include="ViewModels\IOPin.cs" />
+    <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\SoundComponentViewModel.cs" />
     <Compile Include="Views\SoundComponent.xaml.cs">
       <DependentUpon>SoundComponent.xaml</DependentUpon>

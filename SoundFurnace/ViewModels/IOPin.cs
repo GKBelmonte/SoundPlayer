@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SoundFurnace.ViewModels
+namespace Blaze.SoundForge.ViewModels
 {
     class IOPin
     {

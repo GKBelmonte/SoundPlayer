@@ -32,7 +32,13 @@ namespace Blaze.SoundPlayer.TestWinForms
             //1.9 ms/note w/ new WaveGenerator(SinWaveGen)
             //2.9 ms/note w/ sinWave.Generator
             var sine = new SimpleSound(sinWave.WaveGenerator, new EnvelopeGenerator(Adsr1));
-            
+
+            var sound = new SimpleSound(new WaveGenerator(SinWaveGen), new EnvelopeGenerator(Adsr1));
+            var waveProvider = NAudioSoundPlayer.FactoryCreate(
+                new SimpleSound[] { sound, sound, sound, sound },
+                new float[] { 440, 880, 660, 1320 },
+                new float[] { 10, 5.0f, 2.5f, 2.25f });
+
             var sounds = new SimpleSound[] {
                      new SimpleSound(
                         sinWave.WaveGenerator,
@@ -51,10 +57,14 @@ namespace Blaze.SoundPlayer.TestWinForms
             mInstrument = NAudioSoundPlayer.FactoryCreateInstrument(  sounds );
             var rc = new Filters.RCLowPass(1000.0f);
             mInstrument.AddFilter(rc);
-            //mInstrument = NAudioSoundPlayer.FactoryCreateInstrument(new SimpleSound[] { sine, sine, sine, sine},
-            //    new float[] { 1.0f, 2.0f, 1.5f, 3.0f },
-            //    new float[] { 1f, 0.5f, 0.25f, 0.125f }
-            //    );
+            bool additive = false;
+            if (additive)
+            {
+                mInstrument = NAudioSoundPlayer.FactoryCreateInstrument(new SimpleSound[] { sine, sine, sine, sine },
+                    new float[] { 1.0f, 2.0f, 1.5f, 3.0f },
+                    new float[] { 1f, 0.5f, 0.25f, 0.125f }
+                    );
+            }
             mInstrument.Duration = 1000;
             mInstrument.AmplitudeMultiplier = 1.0f;
             mSound.PlayAsync(mInstrument,220,-1);

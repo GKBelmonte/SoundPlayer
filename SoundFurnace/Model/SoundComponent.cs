@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SoundFurnace.Model
+namespace Blaze.SoundForge.Model
 {
     public abstract class SoundComponent 
     {

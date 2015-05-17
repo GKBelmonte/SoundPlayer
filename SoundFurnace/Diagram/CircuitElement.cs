@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using Dalssoft.DiagramNet;
-using SoundFurnace.Model;
+using Blaze.SoundForge.Model;
 using System.Windows.Forms;
 
-namespace SoundFurnace.Diagram
+namespace Blaze.SoundForge.Diagram
 {
     public class CircuitElement : RectangleNode
     {
@@ -84,7 +84,9 @@ namespace SoundFurnace.Diagram
             UpdateConnectorsPosition();
 
             //off with the border
-            borderColor = Color.Transparent;
+            //borderColor = Color.Transparent;//misleading, not actually used. 
+            //A RectangleNode is a RectangleElement AND a NodeElement...
+
             rectangle.BorderColor = Color.Transparent;
         }
 
@@ -113,10 +115,10 @@ namespace SoundFurnace.Diagram
             g.DrawString("✗", CircuitElementInputLabel, ForegroundBrush, new Point(location.X + size.Width - 13, location.Y));
             var inputs = mComponent.InputNames;
             for (var ii = 0; ii < inputs.Length; ++ii)
-                g.DrawString(inputs[ii], CircuitElementInputLabel, ForegroundBrush, new Point(location.X, location.Y + (ii+1)*(sLabelSize + sLabelPadding)));
+                g.DrawString(inputs[ii], CircuitElementInputLabel, ForegroundBrush, new Point(location.X + sLabelPadding, location.Y + (ii + 1) * (sLabelSize + sLabelPadding)));
             var outputs = mComponent.OutputNames;
             for (var ii = 0; ii < outputs.Length; ++ii)
-                g.DrawString(outputs[ii], CircuitElementInputLabel, ForegroundBrush, new Point(location.X + size.Width - mOutputLabelSizes[ii], location.Y + (ii + 1) * (sLabelSize + sLabelPadding)));
+                g.DrawString(outputs[ii], CircuitElementInputLabel, ForegroundBrush, new Point(location.X + size.Width - mOutputLabelSizes[ii] - sLabelPadding, location.Y + (ii + 1) * (sLabelSize + sLabelPadding)));
         }
 
         public override Point Location

@@ -13,10 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Forms.Integration;
-using SoundFurnace.Diagram;
-using SoundFurnace.Model;
+using Blaze.SoundForge.Diagram;
+using Blaze.SoundForge.Model;
 using Blaze.SoundPlayer.Waves;
-namespace SoundFurnace
+namespace Blaze.SoundForge
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml

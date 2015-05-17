@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dalssoft.DiagramNet;
 
-namespace SoundFurnace.Diagram
+namespace Blaze.SoundForge.Diagram
 {
     public class CircuitConnector : ConnectorElement 
     {

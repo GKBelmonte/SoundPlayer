@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Blaze.Core.Wpf;
 
-namespace SoundFurnace.ViewModels
+namespace Blaze.SoundForge.ViewModels
 {
     class SoundComponentViewModel : ViewModel
     {

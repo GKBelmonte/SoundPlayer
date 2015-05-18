@@ -59,6 +59,9 @@
     <Compile Include="Diagram\CircuitElement.cs" />
     <Compile Include="Diagram\DiagramCommands.cs" />
     <Compile Include="Model\Adder.cs" />
+    <Compile Include="Model\CircuitInstrument.cs" />
+    <Compile Include="Model\GlobalInputComponent.cs" />
+    <Compile Include="Model\GlobalOutputComponent.cs" />
     <Compile Include="Model\SinusoidComponent.cs" />
     <Compile Include="Model\SoundComponent.cs" />
     <Compile Include="Model\WaveComponent.cs" />

@@ -31,16 +31,10 @@ namespace Blaze.SoundForge
             InitializeComponent();
             
         }
-        bool placed = false;
+        
         void MainWindow_MouseDown(object sender, System.Windows.Forms.MouseEventArgs e)
         {
-            if (placed)
-                return;
-            var pos = e.Location;
-            CircuitElement element = new CircuitElement(new WaveComponent(new Sinusoid(1024)));
-            element.Location = pos;
-            mDesigner.Document.AddElement(element);
-            placed = true;
+            
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)

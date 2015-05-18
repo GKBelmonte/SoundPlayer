@@ -66,8 +66,10 @@ namespace Blaze.SoundPlayer.WaveProviders
                     var vel = note.mVelocity;
                     //Note should stop ringing if it has rang long enough
                     if ((1000f * (float)(sample - start)) / ((float)sampleRate) > Duration)
+                    {
                         mNoteIsOn[notesThatAreOn[jj]] = false;
-
+                        continue;
+                    }
                     for (var ii = 0; ii < mWaves.Count; ++ii)
                         res +=
                             (

@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Blaze.SoundPlayer.Sounds;
+using NAudio.Wave;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    internal class InstrumentProvider : AdditiveSynthesisWaveProvider, IInstrumentProvider
+    internal class InstrumentProvider : WaveProvider32, IInstrumentProvider
     {
         protected List<Note> mNotes;
         protected List<bool> mNoteIsOn;
@@ -16,9 +17,33 @@ namespace Blaze.SoundPlayer.WaveProviders
         protected List<Filters.Filter> mFilters;
         public float Duration { get; set; }
 
+
+        protected List<SimpleSound> mWaves;
+        protected List<float> mFreq;
+        protected List<float> mAmps;
+
         public InstrumentProvider(IList<SimpleSound> waves, IList<float> freqMultipliers = null, IList<float> amplitudes = null)
-            : base(waves, freqMultipliers, amplitudes)
         {
+            mWaves = new List<SimpleSound>(waves.Count);
+            mWaves.AddRange(waves);
+            mFreq = new List<float>(waves.Count);
+            mAmps = new List<float>(waves.Count);
+
+            if (freqMultipliers == null)
+                foreach (var w in mWaves)
+                    mFreq.Add(1.0f);
+            else
+                mFreq.AddRange(freqs)
+
+            if (amplitudes == null)
+                foreach (SimpleSound s in mWaves)
+                    mAmps.Add(1f);
+            else
+                mAmps.AddRange(amplitudes);
+
+            AmplitudeMultiplier = 1;
+
+
 
             mNoteIsOn = new List<bool>(NUMBER_OF_POSS_NOTES);
             mNoteIsOn.AddRange(new bool[NUMBER_OF_POSS_NOTES]);
@@ -29,20 +54,6 @@ namespace Blaze.SoundPlayer.WaveProviders
                 mNotes.Add(mNotes[ii - 1] + 1);
 
             mFilters = new List<Filters.Filter>();
-
-            if (mFreq == null)
-            {
-                mFreq = new List<float>(mWaves.Count);
-                foreach (var w in mWaves)
-                    mFreq.Add(1.0f);
-            }
-
-            if (mAmps == null)
-            {
-                mAmps = new List<float>();
-                foreach (SimpleSound s in mWaves)
-                    mAmps.Add(1f);
-            }
         }
 
         public override int Read(float[] buffer, int offset, int sampleCount)

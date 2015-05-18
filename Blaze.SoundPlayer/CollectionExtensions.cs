@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Blaze.SoundPlayer
 {
-    static class CollectionExtensions
+    static public class CollectionExtensions
     {
 
         static public IList<int> IndexOfAll<T>(this IList<T> meself, Predicate<T> condition)

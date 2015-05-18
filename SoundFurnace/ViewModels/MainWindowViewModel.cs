@@ -10,11 +10,14 @@ namespace Blaze.SoundForge.ViewModels
 {
     class MainWindowViewModel : ViewModel
     {
-        public ObservableCollection<SoundComponentDefinition> Components{get; private set;}
+        public ObservableCollection<Type> Components{get; private set;}
         public MainWindowViewModel()
         {
-            Components = new ObservableCollection<SoundComponentDefinition>();
-            foreach (var ele in SoundComponentDefinition.StandardDefinitions.Values)
+            //Components = new ObservableCollection<SoundComponentDefinition>();
+            //foreach (var ele in SoundComponentDefinition.StandardDefinitions.Values)
+            //    Components.Add(ele);
+            Components = new ObservableCollection<Type>();
+            foreach (var ele in SoundComponentDefinition.ComponentTypes)
                 Components.Add(ele);
         }
 

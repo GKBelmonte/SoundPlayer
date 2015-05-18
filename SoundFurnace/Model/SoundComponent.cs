@@ -13,7 +13,7 @@ namespace Blaze.SoundForge.Model
         private int[] mInputLinks;
         private SoundComponent[] InputSources { get; set; }
 
-        SoundComponentDefinition mDefinition;
+        protected SoundComponentDefinition mDefinition;
 
         public string[] OutputNames { get { return mDefinition.Outputs.ToArray(); } }
         public string[] InputNames { get { return mDefinition.Inputs.ToArray(); } }
@@ -80,6 +80,17 @@ namespace Blaze.SoundForge.Model
         {
             InputSources[inputIndex] = outputSource;
             mInputLinks[inputIndex] = outputIndex;
+        }
+
+        /// <summary>
+        /// This should be overriden (new) by any derived type that does not 
+        /// have a default constructor, so that at drop-time, the user
+        /// can enter the parameters for the constructor, through some method or another.
+        /// </summary>
+        /// <returns></returns>
+        public static object[] GetParameters()
+        {
+            return null;
         }
     }
 }

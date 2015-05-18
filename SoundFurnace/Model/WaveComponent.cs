@@ -9,8 +9,11 @@ namespace Blaze.SoundForge.Model
 {
     class WaveComponent : SoundComponent
     {
+        static public readonly SoundComponentDefinition WaveComponentDefinition =
+            SoundComponentDefinition.CreateDefinition("Wave", "SampleRate,Sample,Frequency", "Output");
         protected Wave mWave;
-        public WaveComponent(Wave wave) : base(SoundComponentDefinition.StandardDefinitions["Wave"])
+        public WaveComponent(Wave wave)
+            : base(WaveComponentDefinition)
         {
             mWave = wave;
         }

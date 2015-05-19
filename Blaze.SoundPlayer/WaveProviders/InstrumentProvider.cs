@@ -9,15 +9,8 @@ using NAudio.Wave;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    internal class InstrumentProvider : WaveProvider32, IInstrumentProvider
+    internal class InstrumentProvider : InstrumentBase, IAdditiveSynthInstrument
     {
-        protected List<Note> mNotes;
-        protected List<bool> mNoteIsOn;
-        const int NUMBER_OF_POSS_NOTES = 200;
-        protected List<Filters.Filter> mFilters;
-        public float Duration { get; set; }
-
-
         protected List<SimpleSound> mWaves;
         protected List<float> mFreq;
         protected List<float> mAmps;
@@ -33,7 +26,7 @@ namespace Blaze.SoundPlayer.WaveProviders
                 foreach (var w in mWaves)
                     mFreq.Add(1.0f);
             else
-                mFreq.AddRange(freqs)
+                mFreq.AddRange(freqMultipliers);
 
             if (amplitudes == null)
                 foreach (SimpleSound s in mWaves)
@@ -42,18 +35,6 @@ namespace Blaze.SoundPlayer.WaveProviders
                 mAmps.AddRange(amplitudes);
 
             AmplitudeMultiplier = 1;
-
-
-
-            mNoteIsOn = new List<bool>(NUMBER_OF_POSS_NOTES);
-            mNoteIsOn.AddRange(new bool[NUMBER_OF_POSS_NOTES]);
-            var c0 = new Note("C", 0, 0, 0);
-            mNotes = new List<Note>(NUMBER_OF_POSS_NOTES);
-            mNotes.Add(c0);
-            for (var ii = 1; ii < NUMBER_OF_POSS_NOTES; ++ii)
-                mNotes.Add(mNotes[ii - 1] + 1);
-
-            mFilters = new List<Filters.Filter>();
         }
 
         public override int Read(float[] buffer, int offset, int sampleCount)
@@ -77,10 +58,8 @@ namespace Blaze.SoundPlayer.WaveProviders
                     var vel = note.mVelocity;
                     //Note should stop ringing if it has rang long enough
                     if ((1000f * (float)(sample - start)) / ((float)sampleRate) > Duration)
-                    {
                         mNoteIsOn[notesThatAreOn[jj]] = false;
-                        continue;
-                    }
+
                     for (var ii = 0; ii < mWaves.Count; ++ii)
                         res +=
                             (
@@ -111,40 +90,9 @@ namespace Blaze.SoundPlayer.WaveProviders
             return  sampleCount ;
         }
 
-        public Note NoteOn(string step, int octave, float velocity = 1, bool sustain = false)
-        {
-            var index = StepAndOctaveToNumber(step,octave);
-            var outNote = mNotes[index];
-            outNote.mEnd = sample;
-            var newNote = outNote;
-            newNote.mStart = sample;
-            newNote.mVelocity = velocity;
-            mNotes[index] = newNote;
-            mNoteIsOn[index] = true;
-            return outNote;
-        }
-
-        static public int StepAndOctaveToNumber(string step, int octave)
-        {
-            return octave * 12 + Note.NoteLetterToKeyNumber(step);
-        }
-
-        public Note NoteOff(string step, int octave)
-        {
-            var index = StepAndOctaveToNumber(step,octave);
-            var note = mNotes[index];
-            note.mEnd = sample;
-            return note;
-        }
-
         public IList<float> AmplitudeMultipliers
         {
             get { return mAmps; }
-        }
-
-        public void AddFilter(Filters.Filter filter) 
-        {
-            mFilters.Add(filter);
         }
 
     }

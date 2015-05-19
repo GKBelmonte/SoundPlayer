@@ -55,6 +55,7 @@
     <Compile Include="HelperData.cs" />
     <Compile Include="ISoundPlayer.cs" />
     <Compile Include="WaveProviders\IInstrumentProvider.cs" />
+    <Compile Include="WaveProviders\InstrumentBase.cs" />
     <Compile Include="WaveProviders\InstrumentProvider.cs" />
     <Compile Include="WaveProviders\IWaveProviderExposer.cs" />
     <Compile Include="MathExtensions.cs" />

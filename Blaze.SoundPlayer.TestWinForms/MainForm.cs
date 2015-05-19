@@ -173,17 +173,17 @@ namespace Blaze.SoundPlayer.TestWinForms
 
         private void trackBarSin_Scroll(object sender, EventArgs e)
         {
-            mInstrument.AmplitudeMultipliers[0] = trackBarSin.Value / 100f;
+            (mInstrument as IAdditiveSynthInstrument).AmplitudeMultipliers[0] = trackBarSin.Value / 100f;
         }
 
         private void trackBarSaw_Scroll(object sender, EventArgs e)
         {
-            mInstrument.AmplitudeMultipliers[1] = trackBarSaw.Value / 100f;
+            (mInstrument as IAdditiveSynthInstrument).AmplitudeMultipliers[1] = trackBarSaw.Value / 100f;
         }
 
         private void trackBarSqr_Scroll(object sender, EventArgs e)
         {
-            mInstrument.AmplitudeMultipliers[2] = trackBarSqr.Value / 100f;
+            (mInstrument as IAdditiveSynthInstrument).AmplitudeMultipliers[2] = trackBarSqr.Value / 100f;
         }
 
         private void trackBarKey_Scroll(object sender, EventArgs e)

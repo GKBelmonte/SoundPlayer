@@ -30,8 +30,6 @@ namespace Blaze.SoundPlayer.WaveProviders
         /// </summary>
         float Duration { get; set; }
 
-        IList<float> AmplitudeMultipliers { get; }
-
         void AddFilter(Filters.Filter filter);
         
         float AmplitudeMultiplier { get; set; }
@@ -43,5 +41,10 @@ namespace Blaze.SoundPlayer.WaveProviders
         /// <param name="channels"></param>
         void SetWaveFormat(int sampleRate, int channels);
         int Read(float[] buffer, int offset, int sampleCount);
+    }
+
+    public interface IAdditiveSynthInstrument : IInstrumentProvider
+    {
+        IList<float> AmplitudeMultipliers { get; }
     }
 }

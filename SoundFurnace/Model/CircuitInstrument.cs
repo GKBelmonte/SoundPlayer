@@ -8,7 +8,7 @@ using Blaze.SoundPlayer.WaveProviders;
 using Blaze.SoundPlayer.Filters;
 namespace Blaze.SoundForge.Model
 {
-    public class CircuitInstrument : IInstrumentProvider
+    public class CircuitInstrument : InstrumentBase, IInstrumentProvider
     {
         #region Fields/Properties
         //Sampling parameters

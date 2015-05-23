@@ -43,7 +43,7 @@ namespace Blaze.SoundPlayer.WaveProviders
             System.Diagnostics.Stopwatch sw = System.Diagnostics.Stopwatch.StartNew();
 #endif
             int sampleRate = WaveFormat.SampleRate;
-            var sampleNow = sample;
+            var sampleNow = mSample;
             var notesThatAreOn = mNoteIsOn.IndexOfAll(x => (x));
 
             for (int n = 0; n < sampleCount; n++)
@@ -57,7 +57,7 @@ namespace Blaze.SoundPlayer.WaveProviders
                     var freq = note.mFreq;
                     var vel = note.mVelocity;
                     //Note should stop ringing if it has rang long enough
-                    if ((1000f * (float)(sample - start)) / ((float)sampleRate) > Duration)
+                    if ((1000f * (float)(mSample - start)) / ((float)sampleRate) > Duration)
                         mNoteIsOn[notesThatAreOn[jj]] = false;
 
                     for (var ii = 0; ii < mWaves.Count; ++ii)
@@ -68,12 +68,12 @@ namespace Blaze.SoundPlayer.WaveProviders
                                 (mAmps[ii] * AmplitudeMultiplier)
                                     *
                                 mWaves[ii]
-                                .Get(sampleRate, sample - start, freq * mFreq[ii])
+                                .Get(sampleRate, mSample - start, freq * mFreq[ii])
                             );
                 }
 
                 buffer[n + offset] = res;
-                sample++;
+                mSample++;
             }
 
             //Apply filters if any

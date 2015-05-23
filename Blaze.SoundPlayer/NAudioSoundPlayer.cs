@@ -65,12 +65,12 @@ namespace Blaze.SoundPlayer
             IsPlaying = false;
         }
 
-        public static IWaveProviderExposer FactoryCreate(Sounds.SimpleSound sound)
+        public static ISoundProvider FactoryCreate(Sounds.SimpleSound sound)
         {
             return new SimpleSoundProvider(sound);
         }
 
-        public static IWaveProviderExposer FactoryCreate(IList<Sounds.SimpleSound> sounds, IList<float> frq =null, IList<float> amps=null)
+        public static ISoundProvider FactoryCreate(IList<Sounds.SimpleSound> sounds, IList<float> frq =null, IList<float> amps=null)
         {
             return new AdditiveSynthesisWaveProvider(sounds,frq,amps);
         }
@@ -80,7 +80,7 @@ namespace Blaze.SoundPlayer
             return new InstrumentProvider(sounds, frqMuls, amps);
         }
 
-        public void PlaySync(IWaveProviderExposer wave, float freq, int fixedDuration = -1)
+        public void PlaySync(ISoundProvider wave, float freq, int fixedDuration = -1)
         {
             wave.Frequency = freq;
             PlaySync(wave, fixedDuration);
@@ -121,14 +121,12 @@ namespace Blaze.SoundPlayer
             PlaySync(wave, fixedDuration);
         }
 
-
         public void PlaySync(IList<Wave> tracks, IList<float> freq, int fixedDuration)
         {
             var wave = new CompositeFixedDataWaveProvider(tracks);
             wave.Frequencies = freq;
             PlaySync(wave, fixedDuration);
         }
-
 
         public void PlaySync(float[] data)
         {
@@ -164,7 +162,7 @@ namespace Blaze.SoundPlayer
 
         public void PlaySync(SimpleSound track, float freq, int fixedDuration)
         {
-            PlaySync(FactoryCreate(track), freq,fixedDuration);
+            PlaySync(FactoryCreate(track), freq, fixedDuration);
         }
 
         public void PlaySync(IList<SimpleSound> tracks, float freq, int fixedDuration)
@@ -272,11 +270,13 @@ namespace Blaze.SoundPlayer
             }
         }
 
-        public void PlayAsync(IWaveProviderExposer wave, float freq, int fixedDuration = -1)
+        public void PlayAsync(ISoundProvider wave, float freq, int fixedDuration = -1)
         {
             wave.Frequency = freq;
             PlayAsync(wave, fixedDuration);
         }
+
+        
     }
 
 

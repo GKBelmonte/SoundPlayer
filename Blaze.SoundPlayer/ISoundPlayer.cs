@@ -29,7 +29,9 @@ namespace Blaze.SoundPlayer
         void PlaySync(SimpleSound track, float freq, int fixedDuration);
         void PlaySync(IList<SimpleSound> tracks, float freq, int fixedDuration);
 
-        void PlaySync(IWaveProviderExposer tracks, float freq, int fixedDuration);
+        void PlaySync(IWaveProviderExposer tracks, int fixedDuration);
+
+        void PlaySync(ISoundProvider tracks, float freq, int fixedDuration);
 
         bool Stop();
         bool Pause();
@@ -54,6 +56,8 @@ namespace Blaze.SoundPlayer
         void PlayAsync(SimpleSound track, float freq, int fixedDuration);
         void PlayAsync(IList<SimpleSound> tracks, float freq, int fixedDuration);
 
-        void PlayAsync(IWaveProviderExposer tracks, float freq, int fixedDuration);
+        void PlayAsync(IWaveProviderExposer tracks, int fixedDuration);
+
+        void PlayAsync(ISoundProvider tracks, float freq, int fixedDuration);
     }
 }

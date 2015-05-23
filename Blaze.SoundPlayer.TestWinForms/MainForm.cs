@@ -25,7 +25,7 @@ namespace Blaze.SoundPlayer.TestWinForms
             this.KeyDown += MainForm_KeyDown;
             this.KeyUp += MainForm_KeyUp;
             mSound = new NAudioSoundPlayer();
-            mSound.SampleFrequency = 10000;
+            //mSound.SampleFrequency = 10000;
             var sinWave = new Sinusoid(1024);
             var sawWave = new Sawtooth(1024);
             var sqrWave = new Square(1024, 512);
@@ -67,7 +67,7 @@ namespace Blaze.SoundPlayer.TestWinForms
             }
             mInstrument.Duration = 1000;
             mInstrument.AmplitudeMultiplier = 1.0f;
-            mSound.PlayAsync(mInstrument,220,-1);
+            mSound.PlayAsync(mInstrument,-1);
             
             /*Mapping the keys*/
             keyIsDown = new Dictionary<Keys, bool>();

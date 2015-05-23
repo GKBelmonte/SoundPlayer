@@ -45,7 +45,7 @@ namespace Blaze.SoundPlayer.TestConsoleApp
             Console.WriteLine("SimpleSound provider");
             Console.ReadKey(false);
             sound = new SimpleSound(new WaveGenerator(SinWaveGen), new EnvelopeGenerator(Adsr1));
-            IWaveProviderExposer thing = NAudioSoundPlayer.FactoryCreate(sound);
+            ISoundProvider thing = NAudioSoundPlayer.FactoryCreate(sound);
             player4.PlaySync(thing, 440, 3000);
 
             Console.WriteLine("Clipped sinusoid");
@@ -167,7 +167,7 @@ namespace Blaze.SoundPlayer.TestConsoleApp
                 );
             inst.Duration = 2000f;
             inst.AmplitudeMultiplier = 1.0f;
-            player4.PlayAsync(inst, 440, 2000);
+            player4.PlayAsync(inst, 2000);
             inst.NoteOn("A",3, 1.0f);
             Thread.Sleep(500);
             inst.NoteOn("A",4, 1.0f);

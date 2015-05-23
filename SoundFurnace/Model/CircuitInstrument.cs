@@ -8,79 +8,19 @@ using Blaze.SoundPlayer.WaveProviders;
 using Blaze.SoundPlayer.Filters;
 namespace Blaze.SoundForge.Model
 {
-    public class CircuitInstrument : InstrumentBase, IInstrumentProvider
+    public class CircuitInstrument : InstrumentBase
     {
         #region Fields/Properties
-        //Sampling parameters
-        public int SampleRate { get; protected set; }
-        protected int mSample;
-
-        //Note behaviour
-        protected List<Note> mNotes;
-        protected List<bool> mNoteIsOn;
-        const int NUMBER_OF_POSS_NOTES = 200;
-
-        //Sound basic modifiers
-        public float Duration { get; set; }
-        public float AmplitudeMultiplier {get; set;}        
-        
-        //Sound extended modifiers (which are not awesome to have here but wtv)
-        protected List<Filter> mFilters;
-
         //Circuit components
-        public GlobalInputComponent InputComponent { get; private set; }
-        public GlobalOutputComponent OutputComponent { get; private set; }
-        public List<SoundComponent> mComponents { get; private set; }
+        public SoundCircuit Circuit { get; private set; }
         #endregion
         public CircuitInstrument()
         {
-            //Sampling stuff
-            mSample = 0;
-            SampleRate = (int)SampleRates.At16kHz;
-            //Initialize notes
-            mNoteIsOn = new List<bool>(NUMBER_OF_POSS_NOTES);
-            mNoteIsOn.AddRange(new bool[NUMBER_OF_POSS_NOTES]);
-            var c0 = new Note("C", 0, 0, 0);
-            mNotes = new List<Note>(NUMBER_OF_POSS_NOTES);
-            mNotes.Add(c0);
-            for (var ii = 1; ii < NUMBER_OF_POSS_NOTES; ++ii)
-                mNotes.Add(mNotes[ii - 1] + 1);
-            //Filters
-            mFilters = new List<Filter>();
-
             //Circuit i/o
-            InputComponent = new GlobalInputComponent(this);
-            OutputComponent = new GlobalOutputComponent(this);
-            mComponents = new List<SoundComponent>();
+            Circuit = new SoundCircuit();
         }
 
-        public SoundPlayer.Note NoteOn(string step, int octave, float velocity = 1, bool sustain = false)
-        {
-            var index = StepAndOctaveToNumber(step, octave);
-            var outNote = mNotes[index];
-            outNote.mEnd = sample;
-            var newNote = outNote;
-            newNote.mStart = sample;
-            newNote.mVelocity = velocity;
-            mNotes[index] = newNote;
-            mNoteIsOn[index] = true;
-            return outNote;
-        }
-
-        static public int StepAndOctaveToNumber(string step, int octave)
-        {
-            return octave * 12 + Note.NoteLetterToKeyNumber(step);
-        }
-
-        public Note NoteOff(string step, int octave)
-        {
-            var index = StepAndOctaveToNumber(step, octave);
-            var note = mNotes[index];
-            note.mEnd = mSample;
-            return note;
-        }
-
-        public int Read(float[] buffer, int offset, int sampleCount)
+        public override int Read(float[] buffer, int offset, int sampleCount)
         {
             float sampleRate = SampleRate;
             
@@ -108,9 +48,9 @@ namespace Blaze.SoundForge.Model
                 {
                     //Compute the sum of all notes currently playing at sample mSample
                     CycleSetup(note, sampleNow, sampleNow - start);
-                    OutputComponent.Compute();
+                    Circuit.OutputComponent.Compute();
                     
-                    buffer[n + offset] += (float) OutputComponent.Inputs[0];
+                    buffer[n + offset] += (float) Circuit.OutputComponent.Inputs[0];
                     sampleNow++;
                 }
             }
@@ -127,44 +67,8 @@ namespace Blaze.SoundForge.Model
 
         private void CycleSetup(Note note, int sample, int relativeSample)
         {
-            //Sample Rate, Absolute Sample, Relative Sample, Absolute Time, Relative Time, Frequency
-            //Reset all the elements
-            for (var ii = 0; ii < mComponents.Count; ++ii)
-                mComponents[ii].NotifyCycleCompleted();
-            InputComponent.Outputs[0] = SampleRate;
-            InputComponent.Outputs[1] = sample;
-            InputComponent.Outputs[2] = relativeSample;
-            InputComponent.Outputs[3] = (double)sample / (double)SampleRate;
-            InputComponent.Outputs[4] = (double)relativeSample / (double)SampleRate;
-            InputComponent.Outputs[5] = note.mFreq;
+            Circuit.CycleSetup(SampleRate, note, sample, relativeSample);
         }
 
-        public void AddFilter(SoundPlayer.Filters.Filter filter)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void SetWaveFormat(int sampleRate, int channels) //TODO: might need to check implementation of channels
-        {
-            SampleRate = sampleRate;
-        }
-
-        public int Resolution //why is this even here?
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        public float Frequency //TODO: Dont need
-        {
-            get { throw new NotImplementedException(); }
-            set { throw new NotImplementedException(); }
-        }
-
-        public IList<float> AmplitudeMultipliers
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        
     }
 }

@@ -8,7 +8,7 @@ using NAudio.Wave;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    internal class AdditiveSynthesisWaveProvider : WaveProvider32, IWaveProviderExposer
+    internal class AdditiveSynthesisWaveProvider : WaveProvider32, ISoundProvider
     {
         protected int sample;
         protected List<SimpleSound> mWaves;
@@ -32,8 +32,6 @@ namespace Blaze.SoundPlayer.WaveProviders
             AmplitudeMultiplier = 1;//WaveProviderCommon.DefaultAmplitude;
             Frequency = 440;
         }
-
-
 
         public override int Read(float[] buffer, int offset, int sampleCount)
         {

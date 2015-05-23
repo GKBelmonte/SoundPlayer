@@ -8,7 +8,7 @@ using Blaze.SoundPlayer.Sounds;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    internal class SimpleSoundProvider : WaveProvider32, IWaveProviderExposer
+    internal class SimpleSoundProvider : WaveProvider32, ISoundProvider
     {
         int sample;
         SimpleSound mSound;

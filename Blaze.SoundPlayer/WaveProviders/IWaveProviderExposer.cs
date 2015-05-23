@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
-    public interface IWaveProviderExposer //: NAudio.Wave.IWaveProvider 
+    public interface IWaveProviderExposer
     {
-        int Resolution { get; }
-        float Frequency { get; set; }
-        float AmplitudeMultiplier { get; set; }
         /// <summary>
         /// Allows you to specify the sample rate and channels for this WaveProvider
         ///    (should be initialised before you pass it to a wave player)
@@ -19,5 +16,13 @@ namespace Blaze.SoundPlayer.WaveProviders
         /// <param name="channels"></param>
         void SetWaveFormat(int sampleRate, int channels);
         int Read(float[] buffer, int offset, int sampleCount);
+    }
+
+    public interface ISoundProvider : IWaveProviderExposer
+    {
+        int Resolution { get; }
+        float Frequency { get; set; }
+        float AmplitudeMultiplier { get; set; }
+
     }
 }

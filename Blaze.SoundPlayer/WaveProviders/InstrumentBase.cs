@@ -3,22 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Blaze.SoundPlayer.Filters;
 using NAudio.Wave;
 
 namespace Blaze.SoundPlayer.WaveProviders
 {
     public abstract class InstrumentBase : WaveProvider32, IInstrumentProvider
     {
-        protected int sample;
+
+        public int SampleRate { get; protected set; }
+        protected int mSample;
+
+        //Sound note implementation
         protected List<Note> mNotes;
         protected List<bool> mNoteIsOn;
         const int NUMBER_OF_POSS_NOTES = 200;
-        protected List<Filters.Filter> mFilters;
+        
+        //Sound basic modifiers
         public float Duration { get; set; }
         public float AmplitudeMultiplier { get; set; }
 
+        //Sound extended modifiers (which are not awesome to have here but wtv)
+        protected List<Filter> mFilters;
+
         public InstrumentBase()
         {
+            //Sampling stuff
+            mSample = 0;
+            SampleRate = (int)SampleRates.At16kHz;
+
+            //Initialize notes
             mNoteIsOn = new List<bool>(NUMBER_OF_POSS_NOTES);
             mNoteIsOn.AddRange(new bool[NUMBER_OF_POSS_NOTES]);
             var c0 = new Note("C", 0, 0, 0);
@@ -26,17 +40,17 @@ namespace Blaze.SoundPlayer.WaveProviders
             mNotes.Add(c0);
             for (var ii = 1; ii < NUMBER_OF_POSS_NOTES; ++ii)
                 mNotes.Add(mNotes[ii - 1] + 1);
-
-            mFilters = new List<Filters.Filter>();
+            //Filters
+            mFilters = new List<Filter>();
         }
 
         public Note NoteOn(string step, int octave, float velocity = 1, bool sustain = false)
         {
             var index = StepAndOctaveToNumber(step, octave);
             var outNote = mNotes[index];
-            outNote.mEnd = sample;
+            outNote.mEnd = mSample;
             var newNote = outNote;
-            newNote.mStart = sample;
+            newNote.mStart = mSample;
             newNote.mVelocity = velocity;
             mNotes[index] = newNote;
             mNoteIsOn[index] = true;
@@ -52,7 +66,7 @@ namespace Blaze.SoundPlayer.WaveProviders
         {
             var index = StepAndOctaveToNumber(step, octave);
             var note = mNotes[index];
-            note.mEnd = sample;
+            note.mEnd = mSample;
             return note;
         }
 

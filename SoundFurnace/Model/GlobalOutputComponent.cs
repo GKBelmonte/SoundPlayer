@@ -12,8 +12,8 @@ namespace Blaze.SoundForge.Model
         static readonly public SoundComponentDefinition Definition 
             = SoundComponentDefinition.CreateDefinition("Global Output", "Out", "");
 
-        CircuitInstrument mParent;
-        public GlobalOutputComponent(CircuitInstrument parent)
+        SoundCircuit mParent;
+        public GlobalOutputComponent(SoundCircuit parent)
             : base(Definition)
         {
             mParent = parent;

@@ -20,6 +20,8 @@ namespace Blaze.SoundForge.Model
 
         public string TypeName { get { return mDefinition.TypeName; } } 
 
+        public System.Drawing.Point Location {get; set;}
+
         public SoundComponent(string name, int inputs, int outputs)
         {
             var outputNames = new string[outputs];
@@ -42,9 +44,11 @@ namespace Blaze.SoundForge.Model
         private void Initialize()
         {
             SoundComponentDefinition def = mDefinition;
-            Inputs = new double[def.Inputs.Count];
+            
             InputSources = new SoundComponent[def.Inputs.Count];
             mInputLinks = new int[def.Inputs.Count];
+
+            Inputs = new double[def.Inputs.Count];
             Outputs = new double[def.Outputs.Count];
 
             mComputed = false;

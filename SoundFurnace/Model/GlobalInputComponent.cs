@@ -12,8 +12,8 @@ namespace Blaze.SoundForge.Model
             = SoundComponentDefinition.CreateDefinition("Global Input", "", 
             "Sample Rate, Absolute Sample, Relative Sample, Absolute Time, Relative Time, Frequency");
 
-        CircuitInstrument mParent;
-        public GlobalInputComponent(CircuitInstrument parent)
+        SoundCircuit mParent;
+        public GlobalInputComponent(SoundCircuit parent)
             : base(Definition)
         {
             mParent = parent;

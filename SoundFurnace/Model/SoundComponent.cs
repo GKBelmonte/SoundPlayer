@@ -8,10 +8,11 @@ namespace Blaze.SoundForge.Model
 {
     public abstract class SoundComponent 
     {
-        public double[] Outputs { get; protected set; }
-        public double[] Inputs { get; set; }
+        public double[][] Outputs { get; protected set; }
+        public double[][] Inputs { get; set; }
         private int[] mInputLinks;
         private SoundComponent[] InputSources { get; set; }
+        public int SamplesPerComputation { get; private set; }
 
         protected SoundComponentDefinition mDefinition;
 
@@ -42,12 +43,21 @@ namespace Blaze.SoundForge.Model
         private void Initialize()
         {
             SoundComponentDefinition def = mDefinition;
-            Inputs = new double[def.Inputs.Count];
+            Inputs = new double[def.Inputs.Count][];
             InputSources = new SoundComponent[def.Inputs.Count];
             mInputLinks = new int[def.Inputs.Count];
-            Outputs = new double[def.Outputs.Count];
+            Outputs = new double[def.Outputs.Count][];
 
             mComputed = false;
+        }
+
+        public void SetSamplesPerComputation(int samplesPerComputation)
+        {
+            for (var ii = 0; ii < Inputs.Length; ++ii)
+                Inputs[ii] = new double[samplesPerComputation];
+            for (var ii = 0; ii < Outputs.Length; ++ii)
+                Outputs[ii] = new double[samplesPerComputation];
+            SamplesPerComputation = samplesPerComputation;
         }
 
         private bool mComputed;
@@ -62,8 +72,8 @@ namespace Blaze.SoundForge.Model
                     InputSources[ii].Compute();
                     Inputs[ii] = InputSources[ii].Outputs[mInputLinks[ii]];
                 }
-                else
-                    Inputs[ii] = 0;
+                //else
+                    //Inputs[ii] = new double[samplePerCall] 
             }
             ComputeIntenal();
             mComputed = true;

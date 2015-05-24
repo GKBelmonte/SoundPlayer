@@ -52,15 +52,26 @@ namespace Blaze.SoundForge.Model
             InputComponent = new GlobalInputComponent(this);
             OutputComponent = new GlobalOutputComponent(this);
             mComponents = new List<SoundComponent>();
+
+            mComponents.Add(InputComponent);
+            mComponents.Add(OutputComponent);
+        }
+
+        public void Initialize()
+        {
+            foreach (var comp in mComponents)
+            {
+                comp.SetSamplesPerComputation(64);
+            }
         }
 
         public SoundPlayer.Note NoteOn(string step, int octave, float velocity = 1, bool sustain = false)
         {
             var index = StepAndOctaveToNumber(step, octave);
             var outNote = mNotes[index];
-            outNote.mEnd = sample;
+            outNote.mEnd = mSample;
             var newNote = outNote;
-            newNote.mStart = sample;
+            newNote.mStart = mSample;
             newNote.mVelocity = velocity;
             mNotes[index] = newNote;
             mNoteIsOn[index] = true;
@@ -103,14 +114,13 @@ namespace Blaze.SoundForge.Model
                     mNoteIsOn[notesThatAreOn[jj]] = false;
                     effectiveSampleCount = (int)(Duration * (float)sampleRate / 1000f + (float)start - (float)sampleNow);
                 }
+                //Compute the sum of all notes currently playing at sample mSample
+                CycleSetup(note, sampleNow, sampleNow - start);
+                OutputComponent.Compute();
 
-                for (int n = 0; n < effectiveSampleCount; n++)
+                for (int n = 0; n < sampleCount; n++)
                 {
-                    //Compute the sum of all notes currently playing at sample mSample
-                    CycleSetup(note, sampleNow, sampleNow - start);
-                    OutputComponent.Compute();
-                    
-                    buffer[n + offset] += (float) OutputComponent.Inputs[0];
+                    buffer[n + offset] += (float) OutputComponent.Inputs[0][n];
                     sampleNow++;
                 }
             }
@@ -131,12 +141,16 @@ namespace Blaze.SoundForge.Model
             //Reset all the elements
             for (var ii = 0; ii < mComponents.Count; ++ii)
                 mComponents[ii].NotifyCycleCompleted();
-            InputComponent.Outputs[0] = SampleRate;
-            InputComponent.Outputs[1] = sample;
-            InputComponent.Outputs[2] = relativeSample;
-            InputComponent.Outputs[3] = (double)sample / (double)SampleRate;
-            InputComponent.Outputs[4] = (double)relativeSample / (double)SampleRate;
-            InputComponent.Outputs[5] = note.mFreq;
+            var samplesPerComputation = InputComponent.SamplesPerComputation;
+            for (var ii = 0; ii < samplesPerComputation; ++ii)
+            {
+                InputComponent.Outputs[0][ii] = SampleRate;
+                InputComponent.Outputs[1][ii] = sample + ii;
+                InputComponent.Outputs[2][ii] = relativeSample + ii;
+                InputComponent.Outputs[3][ii] = (double)(sample + ii) / (double)SampleRate;
+                InputComponent.Outputs[4][ii] = (double)(relativeSample + ii) / (double)SampleRate;
+                InputComponent.Outputs[5][ii] = note.mFreq;
+            }
         }
 
         public void AddFilter(SoundPlayer.Filters.Filter filter)

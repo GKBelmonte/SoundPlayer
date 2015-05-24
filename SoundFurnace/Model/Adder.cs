@@ -14,10 +14,13 @@ namespace Blaze.SoundForge.Model
 
         protected override void ComputeIntenal()
         {
-            double sum = 0;
-            for (var ii = 0; ii < Inputs.Length; ++ii)
-                sum += Inputs[ii];
-            Outputs[0] = sum;
+            for (var jj = 0; jj < SamplesPerComputation; ++jj )
+            {
+                double sum = 0;
+                for (var ii = 0; ii < Inputs.Length; ++ii)
+                    sum += Inputs[ii][jj];
+                Outputs[0][jj] = sum;
+            }
         }
     }
 }

@@ -15,11 +15,14 @@ namespace Blaze.SoundForge.Model
 
         protected override void ComputeIntenal()
         {
-            var sampleRate = (int)Inputs[0];
-            var sampleNumber = (int)Inputs[1];
-            var freq = (float)Inputs[2];
+            for (var ii = 0; ii < SamplesPerComputation; ++ii)
+            {
+                var sampleRate = (int)Inputs[0][ii];
+                var sampleNumber = (int)Inputs[1][ii];
+                var freq = (float)Inputs[2][ii];
 
-            Outputs[0] = (float)(Math.Sin((2 * Math.PI * sampleNumber * freq) / sampleRate));
+                Outputs[0][ii] = (float)(Math.Sin((2 * Math.PI * sampleNumber * freq) / sampleRate));
+            }
         }
     }
 }

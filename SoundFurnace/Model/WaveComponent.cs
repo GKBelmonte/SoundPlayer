@@ -20,11 +20,14 @@ namespace Blaze.SoundForge.Model
 
         protected override void ComputeIntenal()
         {
-            var sampleRate = (int) Inputs[0];
-            var sampleNumber = (int)Inputs[1];
-            var freq = (float)Inputs[2];
+            for (var ii = 0; ii < SamplesPerComputation; ++ii)
+            {
+                var sampleRate = (int)Inputs[0][ii];
+                var sampleNumber = (int)Inputs[1][ii];
+                var freq = (float)Inputs[2][ii];
 
-            Outputs[0] = mWave[sampleNumber, freq * mWave.Resolution / sampleRate];
+                Outputs[0][ii] = mWave[sampleNumber, freq * mWave.Resolution / sampleRate];
+            }
         }
     }
 }

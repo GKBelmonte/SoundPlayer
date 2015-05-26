@@ -33,7 +33,7 @@ namespace SoundFurnace.Diagram
         public override void Do()
         {
             mDiagram.Document.AddElement(mElement);
-            //do shit to resore links
+            //do shit to restore links
         }
 
         public override void Undo()

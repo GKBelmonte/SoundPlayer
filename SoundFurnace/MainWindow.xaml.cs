@@ -62,7 +62,7 @@ namespace Blaze.SoundForge
             //Drag Source setup
             ToolBox.MouseMove += ToolBox_MouseMove;
 
-
+            
             //Binding hBind = new Binding("Height"){Source = mDesigner};
             //BindingOperations.SetBinding(host, WindowsFormsHost.HeightProperty, hBind);
             //Binding wBind = new Binding("Width") { Source = mDesigner };

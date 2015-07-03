@@ -14,6 +14,8 @@ namespace Blaze.SoundForge.Model
         public GlobalInputComponent InputComponent { get; private set; }
         public GlobalOutputComponent OutputComponent { get; private set; }
         public List<SoundComponent> Components { get; private set; }
+
+        public List<SoundComponent> ComponentComputeOrder { get; private set; }
         #endregion
         public SoundCircuit()
         {
@@ -26,15 +28,38 @@ namespace Blaze.SoundForge.Model
         public void CycleSetup(int sampleRate, Note note, int sample, int relativeSample)
         {
             //Sample Rate, Absolute Sample, Relative Sample, Absolute Time, Relative Time, Frequency
-            //Reset all the elements
-            for (var ii = 0; ii < Components.Count; ++ii)
-                Components[ii].NotifyCycleCompleted();
-            InputComponent.Outputs[0] = sampleRate;
-            InputComponent.Outputs[1] = sample;
-            InputComponent.Outputs[2] = relativeSample;
-            InputComponent.Outputs[3] = (double)sample / (double)sampleRate;
-            InputComponent.Outputs[4] = (double)relativeSample / (double)sampleRate;
-            InputComponent.Outputs[5] = note.mFreq;
+
+            for (var ii = 0; ii < samplesPerComputation; ++ii)
+            {
+                InputComponent.Outputs[0][ii] = sampleRate;
+                InputComponent.Outputs[1][ii] = sample + ii;
+                InputComponent.Outputs[2][ii] = relativeSample + ii;
+                InputComponent.Outputs[3][ii] = (double)(sample + ii) / (double)sampleRate;
+                InputComponent.Outputs[4][ii] = (double)(relativeSample + ii) / (double)sampleRate;
+                InputComponent.Outputs[5][ii] = note.mFreq;
+            }
+        }
+
+        public void Compute()
+        {
+            for (var ii = 0; ii < ComponentComputeOrder.Count; ++ii)
+            {
+                ComponentComputeOrder[ii].Compute();
+            }
+        }
+
+        public void Compile()
+        {
+            foreach (var c in Components)
+                c.ResetCompiledFlag();
+            InputComponent.ResetCompiledFlag();
+            OutputComponent.ResetCompiledFlag();
+
+            List<SoundComponent> order = new List<SoundComponent>(Components.Count + 2);
+            OutputComponent.Compile(order);
+            order.Reverse();
+
+            ComponentComputeOrder = order; 
         }
     }
 }

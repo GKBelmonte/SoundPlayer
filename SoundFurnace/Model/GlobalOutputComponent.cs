@@ -23,5 +23,6 @@ namespace Blaze.SoundForge.Model
         {
             //Nothing to do here! ;)
         }
+
     }
 }

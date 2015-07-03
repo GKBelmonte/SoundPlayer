@@ -51,7 +51,7 @@ namespace Blaze.SoundForge.Model
 
             Inputs = new double[def.Inputs.Count];
 
-            mComputed = false;
+            mCompiled = false;
         }
 
         public void SetSamplesPerComputation(int samplesPerComputation)
@@ -63,31 +63,33 @@ namespace Blaze.SoundForge.Model
             SamplesPerComputation = samplesPerComputation;
         }
 
-        private bool mComputed;
         public void Compute()
         {
-            if (mComputed)
+            ComputeIntenal();
+        }
+
+        private bool mCompiled;
+        public void ResetCompiledFlag { mCompiled = false; }
+
+        public void Compile(List<SoundComponent> currentOrder)
+        {
+            if (mCompiled)
                 return;
+            currentOrder.Add(this);
             for (var ii = 0; ii < Inputs.Length; ++ii)
             {
                 if (InputSources[ii] != null)
                 {
-                    InputSources[ii].Compute();
-                    Inputs[ii] = InputSources[ii].Outputs[mInputLinks[ii]];
+                    InputSources[ii].Compile(List<SoundComponent> currentOrder);
+                    Inputs[ii] = InputSources[ii].Outputs[mInputLinks[ii]]; //link input/output
                 }
-                //else
-                    //Inputs[ii] = new double[samplePerCall] 
+                else
+                    Inputs[ii] = new double[SamplesPerComputation] //No input, fill with zeros (could be replaced by default val)
             }
-            ComputeIntenal();
-            mComputed = true;
+            mCompiled = true;
         }
 
         abstract protected void ComputeIntenal();
-
-        internal void NotifyCycleCompleted()
-        {
-            mComputed = false;
-        }
 
         public void Link(int inputIndex, SoundComponent outputSource, int outputIndex)
         {

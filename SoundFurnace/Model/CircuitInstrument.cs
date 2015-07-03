@@ -14,21 +14,20 @@ namespace Blaze.SoundForge.Model
         //Circuit components
         public SoundCircuit Circuit { get; private set; }
         #endregion
+
         public CircuitInstrument()
         {
             //Circuit i/o
             Circuit = new SoundCircuit();
-
-            mComponents.Add(InputComponent);
-            mComponents.Add(OutputComponent);
         }
 
         public void Initialize()
         {
-            foreach (var comp in mComponents)
+            foreach (var comp in Circuit.Components)
             {
                 comp.SetSamplesPerComputation(64);
             }
+            
         }
 
         public override int Read(float[] buffer, int offset, int sampleCount)
@@ -56,7 +55,7 @@ namespace Blaze.SoundForge.Model
                 }
                 //Compute the sum of all notes currently playing at sample mSample
                 CycleSetup(note, sampleNow, sampleNow - start);
-                OutputComponent.Compute();
+                Circuit.Compute();
 
                 for (int n = 0; n < sampleCount; n++)
                 {
@@ -78,16 +77,6 @@ namespace Blaze.SoundForge.Model
         private void CycleSetup(Note note, int sample, int relativeSample)
         {
             Circuit.CycleSetup(SampleRate, note, sample, relativeSample);
-            var samplesPerComputation = InputComponent.SamplesPerComputation;
-            for (var ii = 0; ii < samplesPerComputation; ++ii)
-            {
-                InputComponent.Outputs[0][ii] = SampleRate;
-                InputComponent.Outputs[1][ii] = sample + ii;
-                InputComponent.Outputs[2][ii] = relativeSample + ii;
-                InputComponent.Outputs[3][ii] = (double)(sample + ii) / (double)SampleRate;
-                InputComponent.Outputs[4][ii] = (double)(relativeSample + ii) / (double)SampleRate;
-                InputComponent.Outputs[5][ii] = note.mFreq;
-            }
         }
 
     }
